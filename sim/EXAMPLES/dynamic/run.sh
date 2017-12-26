@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 cwnd=35
 queuesize=100
