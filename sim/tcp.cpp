@@ -9,6 +9,8 @@
 //  TCP SOURCE
 ////////////////////////////////////////////////////////////////
 
+int _global_node_count = 0;
+
 TcpSrc::TcpSrc(TcpLogger* logger, TrafficLogger* pktlogger, 
 	       EventList &eventlist)
     : EventSource(eventlist,"tcp"),  _logger(logger), _flow(pktlogger)
@@ -59,7 +61,7 @@ TcpSrc::TcpSrc(TcpLogger* logger, TrafficLogger* pktlogger,
     _rtx_timeout_pending = false;
     _RFC2988_RTO_timeout = timeInf;
 
-    _nodename = "tcpsrc";
+    _nodename = "tcpsrc" + to_string(_global_node_count++);
 }
 
 #ifdef PACKET_SCATTER
@@ -459,8 +461,8 @@ TcpSrc::send_packets() {
 #else
 	TcpPacket* p = TcpPacket::newpkt(_flow, *_route, _highest_sent+1, data_seq, _mss);
 #endif
-	p->flow().logTraffic(*p,*this,TrafficLogger::PKT_CREATESEND);
-	p->set_ts(eventlist().now());
+    p->flow().logTraffic(*p,*this,TrafficLogger::PKT_CREATESEND);
+    p->set_ts(eventlist().now());
     
 	_highest_sent += _mss;  //XX beware wrapping
 	_packets_sent += _mss;
@@ -514,7 +516,7 @@ TcpSrc::retransmit_packet() {
     TcpPacket* p = TcpPacket::newpkt(_flow, *_route, _last_acked+1, data_seq, _mss);
 #endif
 
-    p->flow().logTraffic(*p,*this,TrafficLogger::PKT_CREATESEND);
+    //p->flow().logTraffic(*p,*this,TrafficLogger::PKT_CREATESEND);
     p->set_ts(eventlist().now());
     p->sendOn();
 
@@ -697,7 +699,7 @@ TcpSink::send_ack(simtime_picosec ts,bool marked) {
     TcpAck *ack = TcpAck::newpkt(_src->_flow, *rt, 0, _cumulative_ack, 
 				 _mSink!=NULL?_mSink->data_ack():0);
 
-    ack->flow().logTraffic(*ack,*this,TrafficLogger::PKT_CREATESEND);
+    //ack->flow().logTraffic(*ack,*this,TrafficLogger::PKT_CREATESEND);
     ack->set_ts(ts);
     if (marked) 
 	ack->set_flags(ECN_ECHO);
