@@ -21,6 +21,8 @@ class EventSource : public Logged {
 class EventList {
 public:
     EventList();
+    void incrementNumOfFlowsFinished();
+    int getNumOfFlowsFinished();
     void setEndtime(simtime_picosec endtime); // end simulation at endtime (rather than forever)
     bool doNextEvent(); // returns true if it did anything, false if there's nothing to do
     void sourceIsPending(EventSource &src, simtime_picosec when);
@@ -34,6 +36,7 @@ private:
     simtime_picosec _lasteventtime;
     typedef multimap <simtime_picosec, EventSource*> pendingsources_t;
     pendingsources_t _pendingsources;
+    int _num_of_flows_finished;
 };
 
 #endif

@@ -84,7 +84,7 @@ NdpSrc::NdpSrc(NdpLogger* logger, TrafficLogger* pktlogger, EventList &eventlist
     _rtx_timeout_pending = false;
     _rtx_timeout = timeInf;
     _node_num = _global_node_count++;
-    _nodename = "ndpsrc" + to_string(_node_num);
+    _nodename = "ndpsrc-" + to_string(_node_num);
 
     // debugging hack
     _log_me = false;
@@ -420,7 +420,8 @@ void NdpSrc::processAck(const NdpAck& ack) {
     assert(_flight_size>=0);
 
     if (cum_ackno >= _flow_size){
-	cout << "Flow " << nodename() << " finished at " << timeAsMs(eventlist().now()) << endl;
+        cout << "Flow " << nodename() << " finished at " << timeAsMs(eventlist().now()) << endl;
+        eventlist().incrementNumOfFlowsFinished();
     }
 
     update_rtx_time();

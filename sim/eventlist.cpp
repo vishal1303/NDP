@@ -5,8 +5,21 @@
 
 EventList::EventList()
     : _endtime(0),
-      _lasteventtime(0)
+      _lasteventtime(0),
+      _num_of_flows_finished(0)
 {
+}
+
+void
+EventList::incrementNumOfFlowsFinished()
+{
+    _num_of_flows_finished++;
+}
+
+int
+EventList::getNumOfFlowsFinished()
+{
+    return _num_of_flows_finished;
 }
 
 void

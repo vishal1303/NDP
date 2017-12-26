@@ -61,7 +61,7 @@ TcpSrc::TcpSrc(TcpLogger* logger, TrafficLogger* pktlogger,
     _rtx_timeout_pending = false;
     _RFC2988_RTO_timeout = timeInf;
 
-    _nodename = "tcpsrc" + to_string(_global_node_count++);
+    _nodename = "tcpsrc-" + to_string(_global_node_count++);
 }
 
 #ifdef PACKET_SCATTER
@@ -186,7 +186,8 @@ TcpSrc::receivePacket(Packet& pkt)
 	_rto = timeFromMs(1);
 
     if (seqno >= _flow_size){
-	cout << "Flow " << nodename() << " finished at " << timeAsMs(eventlist().now()) << endl;	
+        cout << "Flow " << nodename() << " finished at " << timeAsMs(eventlist().now()) << endl;	
+        eventlist().incrementNumOfFlowsFinished();
     }
   
     if (seqno > _last_acked) { // a brand new ack

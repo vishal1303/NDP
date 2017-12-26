@@ -1,6 +1,8 @@
 // -*- c-basic-offset: 4; tab-width: 8; indent-tabs-mode: t -*-        
 
 #include "config.h"
+#include <stdio.h>
+#include <stdlib.h>
 #include <sstream>
 #include <strstream>
 #include <iostream>
@@ -37,8 +39,7 @@
 #define PERIODIC 0
 #include "main.h"
 
-//int RTT = 10; // this is per link delay; identical RTT microseconds = 0.02 ms
-uint32_t RTT = 1; // this is per link delay in us; identical RTT microseconds = 0.001 ms
+double RTT = 5; // this is per link delay in ns
 int DEFAULT_NODES = 432;
 
 FirstFit* ff = NULL;
@@ -82,10 +83,12 @@ private:
 };
 
 int main(int argc, char **argv) {
-    eventlist.setEndtime(timeFromSec(2));
+    double endtime = 24*60*60; //in seconds
+    int num_of_flows_to_finish = 1000000;
     Clock c(timeFromSec(5 / 100.), eventlist);
     int no_of_conns = 0, no_of_nodes = DEFAULT_NODES, cwnd = 15,
-	pktsize=1500, flowsize=pktsize*50, queuesize=8;
+	pktsize=1500, queuesize=8;
+    uint64_t flowsize=pktsize*50;
     stringstream filename(ios_base::out);
     char inp_filename[5000];
 
@@ -99,6 +102,7 @@ int main(int argc, char **argv) {
 	    i++;
     } else if (!strcmp(argv[i],"-i")){
         strcpy(inp_filename, argv[i+1]);
+        cout << "input file: " << inp_filename << endl;
 	    i++;
 	} else if (!strcmp(argv[i],"-sub")){
 	    subflow_count = atoi(argv[i+1]);
@@ -116,7 +120,7 @@ int main(int argc, char **argv) {
 	    cout << "cwnd "<< cwnd << endl;
 	    i++;
 	} else if (!strcmp(argv[i],"-flowsize")){
-            flowsize = atoi(argv[i+1]);
+            flowsize = atol(argv[i+1]);
             cout << "flowsize "<< flowsize << endl;
             i++;
 	} else if (!strcmp(argv[i],"-pktsize")){
@@ -127,21 +131,30 @@ int main(int argc, char **argv) {
             queuesize = atoi(argv[i+1]);
             cout << "queuesize "<< queuesize << endl;
             i++;
+	} else if (!strcmp(argv[i],"-endtime")){
+            endtime = atof(argv[i+1]);
+            cout << "endtime "<< queuesize << endl;
+            i++;
+	} else if (!strcmp(argv[i],"-numflowsfinish")){
+            num_of_flows_to_finish = atoi(argv[i+1]);
+            cout << "finish after "<< num_of_flows_to_finish << " flows"<<endl;
+            i++;
 	} else
 	    exit_error(argv[0]);
 
 	i++;
     }
     srand(13);
-      
+
+    eventlist.setEndtime(timeFromSec(endtime));
+
     cout << "Using subflow count " << subflow_count <<endl;
 
     Packet::set_packet_size(pktsize);
-      
-    // prepare the loggers
 
+    // prepare the loggers
     cout << "Logging to " << filename.str() << endl;
-    //Logfile 
+    //Logfile
     Logfile logfile(filename.str(), eventlist);
 
 #if PRINT_PATHS
@@ -164,8 +177,8 @@ int main(int argc, char **argv) {
 
     TcpSinkLoggerSampling sinkLogger = TcpSinkLoggerSampling(timeFromMs(10), eventlist);
     logfile.addLogger(sinkLogger);
-    TcpTrafficLogger traffic_logger = TcpTrafficLogger();
-    logfile.addLogger(traffic_logger);
+    //TcpTrafficLogger traffic_logger = TcpTrafficLogger();
+    //logfile.addLogger(traffic_logger);
     
     TcpSrc* tcpSrc;
     TcpSink* tcpSnk;
@@ -259,17 +272,22 @@ int main(int argc, char **argv) {
 
     while (getline(input_file, line)) {
         stringstream iss(line);
-        getline(iss, id, ",");
-        getline(iss, src_string, ",");
-        getline(iss, dest_string, ",");
-        getline(iss, flowsize_string, ",");
-        getline(iss, starttime_string, "\n");
+        getline(iss, id, ',');
+        getline(iss, src_string, ',');
+        getline(iss, dest_string, ',');
+        getline(iss, flowsize_string, ',');
+        getline(iss, starttime_string, '\n');
 
-        int src = atoi(src_string);
-        int dest = atoi(dest_string);
-        flowsize = atoi(flowsize_string);
+        int src = atoi(src_string.c_str());
+        int dest = atoi(dest_string.c_str());
+        flowsize = atol(flowsize_string.c_str());
+        if (flowsize % pktsize != 0) {
+            flowsize = pktsize*(flowsize/pktsize);
+        } else {
+            flowsize -= pktsize;
+        }
         double starttime;
-        sscanf(starttime_string, "%lf", starttime);
+        sscanf(starttime_string.c_str(), "%lf", &starttime);
 
         vector<int> subflows_chosen;
 
@@ -300,17 +318,18 @@ int main(int argc, char **argv) {
                 //if (connID%10!=0)
                 //it_sub = 1;
 
-                tcpSrc = new DCTCPSrc(NULL, &traffic_logger, eventlist);
+                //tcpSrc = new DCTCPSrc(NULL, &traffic_logger, eventlist);
+                tcpSrc = new DCTCPSrc(NULL, NULL, eventlist);
                 tcpSnk = new TcpSink();
 
                 tcpSrc->set_ssthresh(cwnd*Packet::data_packet_size());
                 tcpSrc->set_flowsize(flowsize);
 
-                tcpSrc->_rto = timeFromMs(10);
-                tcpSrc->setName("tcp_" + ntoa(src) + "_" + ntoa(dest)+"("+ntoa(connID)+")");
+                tcpSrc->_rto = timeFromMs(1);
+                tcpSrc->setName("tcp_" + ntoa(src) + "_" + ntoa(dest)+"_"+ntoa(connID));
                 logfile.writeName(*tcpSrc);
 
-                tcpSnk->setName("tcp_sink_" + ntoa(src) + "_" + ntoa(dest)+ "("+ntoa(connID)+")");
+                tcpSnk->setName("tcp_sink_" + ntoa(src) + "_" + ntoa(dest)+ "_"+ntoa(connID));
                 logfile.writeName(*tcpSnk);
 
                 connID++;
@@ -417,11 +436,13 @@ int main(int argc, char **argv) {
     logfile.write("# hostnicrate = " + ntoa(HOST_NIC) + " pkt/sec");
     logfile.write("# corelinkrate = " + ntoa(HOST_NIC*CORE_TO_HOST) + " pkt/sec");
     //logfile.write("# buffer = " + ntoa((double) (queues_na_ni[0][1]->_maxsize) / ((double) pktsize)) + " pkt");
-    double rtt = timeAsSec(timeFromUs(RTT));
+    double rtt = timeAsSec(timeFromNs(RTT));
     logfile.write("# rtt =" + ntoa(rtt));
 
     // GO!
     while (eventlist.doNextEvent()) {
+        if (eventlist.getNumOfFlowsFinished() == num_of_flows_to_finish)
+            break;
     }
 
     cout << "Done" << endl;
