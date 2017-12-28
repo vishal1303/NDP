@@ -3,7 +3,7 @@ import sys
 fct_filename = sys.argv[1]
 rate_filename = sys.argv[2]
 infilename = sys.argv[3]
-outfilename = sys.argv[3]+".dctcp"
+outfilename = sys.argv[3]+".dcqcn"
 
 flows = {}
 inp = open(infilename, "r")
