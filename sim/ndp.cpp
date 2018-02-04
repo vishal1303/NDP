@@ -1188,7 +1188,7 @@ int NdpPullPacer::_pull_spacing_cdf_count = 0;
 NdpPullPacer::NdpPullPacer(EventList& event, double pull_rate_modifier)  : 
     EventSource(event, "ndp_pacer"), _last_pull(0)
 {
-    _packet_drain_time = (simtime_picosec)(Packet::data_packet_size() * (pow(10.0,12.0) * 8) / speedFromMbps((uint64_t)10000))/pull_rate_modifier;
+    _packet_drain_time = (simtime_picosec)(Packet::data_packet_size() * (pow(10.0,12.0) * 8) / speedFromMbps((uint64_t)50000))/pull_rate_modifier;
     _log_me = false;
     _pacer_no = 0;
 }

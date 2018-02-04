@@ -1,0 +1,7 @@
+arch BDB GraphLab Memcached Terasort-Spark Terasort-Hadoop
+Shoal(4-uplinks) 38 38 35 38 37
+Shoal(2-uplinks) 41 41 39 41 40
+Shoal(1-uplink) 42 42 40 42 41
+DCTCP 15 15 10 16 15
+DCQCN 15 15 11 16 14
+NDP 18 17 15 18 17

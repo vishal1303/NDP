@@ -1,0 +1,4 @@
+arch BDB GraphLab Memcached Wordcount-Spark Terasort-Spark Terasort-Hadoop
+Shoal 80 82 82 89 77 85
+DCTCP 107 112 175 110 97 124
+DCQCN 116 109 197 108 98 129

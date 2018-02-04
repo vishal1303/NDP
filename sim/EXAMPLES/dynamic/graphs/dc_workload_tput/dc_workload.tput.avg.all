@@ -1,0 +1,7 @@
+arch 0.1 0.25 0.5 0.75 1
+Shoal(4-uplinks) 72 64 53 43 35
+Shoal(2-uplinks) 75 67 56 46 38
+Shoal(1-uplink) 74 66 56 46 39
+DCTCP 44 38 29 23 21
+DCQCN 44 38 29 23 21
+NDP 44 39 32 27 21

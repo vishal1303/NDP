@@ -1,0 +1,5 @@
+arch BDB GraphLab Memcached Terasort-Spark Terasort-Hadoop
+Shoal 42 41 48 39 45
+DCTCP 26 25 31 22 29
+DCQCN 26 26 32 23 30
+NDP 26 25 30 24 27

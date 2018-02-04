@@ -133,7 +133,7 @@ int main(int argc, char **argv) {
             i++;
 	} else if (!strcmp(argv[i],"-endtime")){
             endtime = atof(argv[i+1]);
-            cout << "endtime "<< queuesize << endl;
+            cout << "endtime "<< endtime << endl;
             i++;
 	} else if (!strcmp(argv[i],"-numflowsfinish")){
             num_of_flows_to_finish = atoi(argv[i+1]);
@@ -326,10 +326,10 @@ int main(int argc, char **argv) {
                 tcpSrc->set_flowsize(flowsize);
 
                 tcpSrc->_rto = timeFromMs(1);
-                tcpSrc->setName("tcp_" + ntoa(src) + "_" + ntoa(dest)+"_"+ntoa(connID));
+                tcpSrc->setName("tcp_" + itoa(src) + "_" + itoa(dest)+"_"+itoa(connID));
                 logfile.writeName(*tcpSrc);
 
-                tcpSnk->setName("tcp_sink_" + ntoa(src) + "_" + ntoa(dest)+ "_"+ntoa(connID));
+                tcpSnk->setName("tcp_sink_" + itoa(src) + "_" + itoa(dest)+ "_"+itoa(connID));
                 logfile.writeName(*tcpSnk);
 
                 connID++;

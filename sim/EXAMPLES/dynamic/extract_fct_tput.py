@@ -17,7 +17,7 @@ for line in inp:
         if (float((tokens[5].split())[0]) != -1):
             sorted_fct.append(float((tokens[5].split())[0]))
     elif (flowsize >= long_flow):
-        if (float((tokens[6].split())[0]) != 0):
+        if (float((tokens[6].split())[0]) != 0 and float((tokens[5].split())[0]) != -1):
             sorted_tput.append(float((tokens[6].split())[0]))
 inp.close()
 
