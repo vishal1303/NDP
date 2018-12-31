@@ -101,13 +101,15 @@ Queue* FatTreeTopology::alloc_queue(QueueLogger* queueLogger, mem_b queuesize){
 
 Queue* FatTreeTopology::alloc_queue(QueueLogger* queueLogger, uint64_t speed, mem_b queuesize){
     if (qt==RANDOM)
-	return new RandomQueue(speedFromMbps(speed), memFromPkt(SWITCH_BUFFER + RANDOM_BUFFER), *eventlist, queueLogger, memFromPkt(RANDOM_BUFFER));
+	//return new RandomQueue(speedFromMbps(speed), memFromPkt(SWITCH_BUFFER + RANDOM_BUFFER), *eventlist, queueLogger, memFromPkt(RANDOM_BUFFER));
+	return new RandomQueue(speedFromMbps(speed), queuesize, *eventlist, queueLogger, memFromPkt(RANDOM_BUFFER));
     else if (qt==COMPOSITE)
 	return new CompositeQueue(speedFromMbps(speed), queuesize, *eventlist, queueLogger);
     else if (qt==CTRL_PRIO)
 	return new CtrlPrioQueue(speedFromMbps(speed), queuesize, *eventlist, queueLogger);
     else if (qt==ECN)
-	return new ECNQueue(speedFromMbps(speed), memFromPkt(2*SWITCH_BUFFER), *eventlist, queueLogger, memFromPkt(15));
+	//return new ECNQueue(speedFromMbps(speed), memFromPkt(2*SWITCH_BUFFER), *eventlist, queueLogger, memFromPkt(15));
+	return new ECNQueue(speedFromMbps(speed), queuesize, *eventlist, queueLogger, memFromPkt(15));
     else if (qt==LOSSLESS)
 	return new LosslessQueue(speedFromMbps(speed), memFromPkt(50), *eventlist, queueLogger, NULL);
     else if (qt==LOSSLESS_INPUT)

@@ -94,7 +94,7 @@ def hw_histogram_from_file(keys, fnames, fig_path, fig_name, x_label, y_labels, 
             ax.set_ylabel(y_labels[k].strip(), fontsize=24, labelpad=17)
         if k == 1:
             ax.set_ylabel(y_labels[k].strip(), fontsize=24)
-            ax.set_xlabel(x_label.strip(), fontsize=font['size'], labelpad=1)
+            ax.set_xlabel(x_label.strip(), fontsize=font['size'], labelpad=5)
             #lgd = ax.legend(loc='upper center', bbox_to_anchor=(0.5, -0.3), fancybox=False, shadow=True, ncol=legend_cols, fontsize=font['size']-3)
             #plt.savefig(fig_path+fig_name,bbox_extra_artists=(lgd,), bbox_inches='tight')
             plt.savefig(fig_path+fig_name,bbox_inches='tight')

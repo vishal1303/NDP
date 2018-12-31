@@ -35,7 +35,7 @@ for line in rate_file:
     if (tokens[1] == "Mbps"):
         ID = int((tokens[5].split('_'))[4])
         rate = float(tokens[0])/1000
-        assert(rate <= LINK_SPEED)
+        #assert(rate <= LINK_SPEED)
         if ID in flows:
             out.write(str(ID)+","+str(flows[ID][0])+","+str(flows[ID][1])+","+str(flows[ID][2])+","+str(flows[ID][3])+","+str(-1)+ " us,"+str(rate)+ " Gbps")
             out.write("\n")

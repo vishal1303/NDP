@@ -94,7 +94,7 @@ def hw_histogram_from_file(keys, fnames, fig_path, fig_name, x_label, y_labels, 
             ax.set_ylabel(y_labels[k].strip(), fontsize=24, labelpad=5)
         if k == 1:
             ax.set_ylabel(y_labels[k].strip(), fontsize=24)
-            ax.set_xlabel(x_label.strip(), fontsize=font['size'], labelpad=1)
+            ax.set_xlabel(x_label.strip(), fontsize=font['size'], labelpad=5)
             #lgd = ax.legend(loc='upper center', bbox_to_anchor=(0.5, -0.3), fancybox=False, shadow=True, ncol=legend_cols, fontsize=font['size']-3)
             #plt.savefig(fig_path+fig_name,bbox_extra_artists=(lgd,), bbox_inches='tight')
             plt.savefig(fig_path+fig_name,bbox_inches='tight')
@@ -948,7 +948,7 @@ load_path = os.getcwd() + "/"
 #keys = [('o', 'Shoal(4-uplinks)'), ('+', 'Shoal(2-uplinks)'), ('.', 'Shoal(1-uplink)'), ('x', 'DCTCP'), ('*', 'DCQCN')]
 #keys = [('orange', 'Shoal(4-uplinks)'), ('dodgerblue', 'Shoal(2-uplinks)'), ('crimson', 'Shoal(1-uplink)'), ('turquoise', 'DCTCP'), ('rosybrown', 'DCQCN'), ('black', 'NDP')]
 keys = [('crimson', 'Shoal')]
-hw_histogram_from_file(keys, ["dc_workload_failures.fct", "dc_workload_failures.tput"], load_path, "dc_workload_failures", "Percentage of failed nodes", ["FCT (us)", "Throughput (Gbps)"])
+hw_histogram_from_file(keys, ["dc_workload_failures.fct", "dc_workload_failures.tput"], load_path, "dc_workload_failures", "Percentage of failed nodes", ["FCT (us)", "Goodput (Gbps)"])
 
 #keys = [('x', 'School')]
 #hw_histogram_from_file(keys, "incast-goodput.txt", load_path, "incast-goodput", "Communicating Pairs", "Goodput (Gbps)")

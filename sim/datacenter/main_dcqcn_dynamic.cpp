@@ -23,9 +23,10 @@
 #include "topology.h"
 #include "connection_matrix.h"
 #include "dctcp.h"
-//#include "vl2_topology.h"
 
-#include "fat_tree_topology.h"
+//#include "vl2_topology.h"
+//#include "fat_tree_topology.h"
+#include "leaf_spine_topology.h"
 //#include "oversubscribed_fat_tree_topology.h"
 //#include "multihomed_fat_tree_topology.h"
 //#include "star_topology.h"
@@ -39,7 +40,7 @@
 #define PERIODIC 0
 #include "main.h"
 
-double RTT = 5; // this is per link delay in ns
+double RTT = 200; // this is per link delay in ns
 int DEFAULT_NODES = 432;
 
 FirstFit* ff = NULL;
@@ -222,6 +223,11 @@ int main(int argc, char **argv) {
     VL2Topology* top = new VL2Topology(&logfile,&eventlist,ff);
 #endif
 
+#ifdef LEAF_SPINE
+    LeafSpineTopology* top = new LeafSpineTopology(memFromPkt(queuesize), &logfile,
+					       &eventlist,ff,LOSSLESS_INPUT_ECN);
+#endif
+
     vector<const Route*>*** net_paths;
     net_paths = new vector<const Route*>**[no_of_nodes];
 
@@ -265,6 +271,7 @@ int main(int argc, char **argv) {
 
     // used just to print out stats data at the end
     list <const Route*> routes;
+    list <TcpSink*> sinks;
 
     string line, id, src_string, dest_string, flowsize_string, starttime_string;
     ifstream input_file(inp_filename);
@@ -339,6 +346,10 @@ int main(int argc, char **argv) {
                 int choice = 0;
 
 #ifdef FAT_TREE
+                choice = rand()%net_paths[src][dest]->size();
+#endif
+
+#ifdef LEAF_SPINE
                 choice = rand()%net_paths[src][dest]->size();
 #endif
 
@@ -423,6 +434,8 @@ int main(int argc, char **argv) {
                 //    ff->add_flow(src,dest,tcpSrc);
 
                 sinkLogger.monitorSink(tcpSnk);
+
+                sinks.push_back(tcpSnk);
             }
         }
     }
@@ -440,9 +453,26 @@ int main(int argc, char **argv) {
     logfile.write("# rtt =" + ntoa(rtt));
 
     // GO!
+    long cntr = 100;
     while (eventlist.doNextEvent()) {
-        if (eventlist.getNumOfFlowsFinished() == num_of_flows_to_finish)
+        if (eventlist.getNumOfFlowsFinished() == num_of_flows_to_finish) {
             break;
+        } else {
+            long long unsigned curr_time = eventlist.now();
+            if (curr_time/1000000 >= cntr) {
+                cntr = cntr + 100;
+                double total_bits_recvd = 0.0;
+                int cnt = 0;
+                while (cnt < sinks.size()) {
+                    TcpSink* s = sinks.back();
+                    sinks.pop_back();
+                    sinks.push_front(s);
+                    cnt++;
+                    total_bits_recvd += (s->_packets*8.0);
+                }
+                printf("******************************* size = %d cnt = %d t = %llu us, utilization = %lf\n", sinks.size(), cnt, curr_time/1000000, (total_bits_recvd/(eventlist.now()/10000.0))/16);
+            }
+        }
     }
 
     cout << "Done" << endl;

@@ -4,18 +4,17 @@
 #include <string>
 
 
-#define HOST_NIC 50000 // host nic speed in Gbps
+#define HOST_NIC 10000 // host nic speed in Gbps
 #define CORE_TO_HOST 4
 
 //basic setup!
 
+//#define NI 3        //Number of intermediate switches
+//#define NA 6        //Number of aggregation switches
+//#define NT 9        //Number of ToR switches (180 hosts)
 
-#define NI 3        //Number of intermediate switches
-#define NA 6        //Number of aggregation switches
-#define NT 9        //Number of ToR switches (180 hosts)
-
-#define NS 20        //Number of servers per ToR switch
-#define TOR_AGG2(tor) (10*NA - tor - 1)%NA
+//#define NS 20        //Number of servers per ToR switch
+//#define TOR_AGG2(tor) (10*NA - tor - 1)%NA
 
 
 /*
@@ -52,14 +51,21 @@
 #define TOR_AGG2(tor) (tor+1)%NA*/
 
 
-/*//This is 40Gb/s in the core, 10Gb/s in the access; remember to change core_to_host above
+//This is 40Gb/s in the core, 10Gb/s in the access; remember to change core_to_host above
 #define NI 5        //Number of intermediate switches
 #define NA 10        //Number of aggregation switches
 #define NT 25        //Number of ToR switches (200 hosts)
 
 #define NS 8        //Number of servers per ToR switch
 #define TOR_AGG2(tor) (tor+5)%NA
-*/
+
+
+//#define NI 6        //Number of intermediate switches
+//#define NA 6        //Number of aggregation switches
+//#define NT 18        //Number of ToR switches (144 hosts)
+
+//#define NS 8        //Number of servers per ToR switch
+//#define TOR_AGG2(tor) (tor+3)%NA
 
 //oversubscribed VL2, 40Gb/s core
 

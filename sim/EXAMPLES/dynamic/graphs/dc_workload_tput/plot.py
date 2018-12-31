@@ -916,10 +916,10 @@ load_path = os.getcwd() + "/"
 
 #keys = [('orange', 'Shoal(4-uplinks)'), ('dodgerblue', 'Shoal(2-uplinks)'), ('crimson', 'Shoal(1-uplink)'), ('turquoise', 'DCTCP'), ('rosybrown', 'DCQCN'), ('black', 'NDP')]
 keys = [('crimson', 'Shoal'), ('dodgerblue', 'DCTCP'), ('orange', 'DCQCN'), ('turquoise', 'NDP')]
-hw_histogram_from_file(keys, "dc_workload.tput.avg", load_path, "dc_workload_tput", "Load", "Throughput (Gbps)")
+hw_histogram_from_file(keys, "dc_workload.tput.avg", load_path, "dc_workload_tput", "Load", "Goodput (Gbps)")
 
 keys = [('crimson', 'Shoal'), ('dodgerblue', 'DCTCP'), ('orange', 'DCQCN'), ('turquoise', 'NDP')]
-hw_histogram_from_file(keys, "dc_workload.tput.avg.100g", load_path, "dc_workload_tput_100g", "Load", "Throughput (Gbps)")
+hw_histogram_from_file(keys, "dc_workload.tput.avg.100g", load_path, "dc_workload_tput_100g", "Load", "Goodput (Gbps)")
 
 #keys = [('x', 'School')]
 #hw_histogram_from_file(keys, "incast-goodput.txt", load_path, "incast-goodput", "Communicating Pairs", "Goodput (Gbps)")

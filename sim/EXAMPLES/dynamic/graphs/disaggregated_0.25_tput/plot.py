@@ -865,11 +865,11 @@ load_path = os.getcwd() + "/"
 #keys = [('orange', 'Shoal(4-uplinks)'), ('dodgerblue', 'Shoal(2-uplinks)'), ('crimson', 'Shoal(1-uplink)'), ('turquoise', 'DCTCP'), ('rosybrown', 'DCQCN'), ('black', 'NDP')]
 keys = [('crimson', 'Shoal'), ('dodgerblue', 'DCTCP'), ('orange', 'DCQCN'), ('turquoise', 'NDP')]
 label_replacer = {'BDB': 'Big Data\nBenchmark', 'Wordcount-Spark': 'Wordcount\nSpark', 'Terasort-Spark': 'TeraSort\nSpark', 'Terasort-Hadoop': 'TeraSort\nHadoop', 'Wordcount-Hadoop': 'Wordcount\nHadoop'}
-hw_histogram_from_file(keys, "disaggregated_0.25.tput.avg", load_path, "disaggregated_0_25_tput", "Application", "Throughput (Gbps)", label_replacer=label_replacer)
+hw_histogram_from_file(keys, "disaggregated_0.25.tput.avg", load_path, "disaggregated_0_25_tput", "Application", "Goodput (Gbps)", label_replacer=label_replacer)
 
 keys = [('crimson', 'Shoal'), ('dodgerblue', 'DCTCP'), ('orange', 'DCQCN'), ('turquoise', 'NDP')]
 label_replacer = {'BDB': 'Big Data\nBenchmark', 'Wordcount-Spark': 'Wordcount\nSpark', 'Terasort-Spark': 'TeraSort\nSpark', 'Terasort-Hadoop': 'TeraSort\nHadoop', 'Wordcount-Hadoop': 'Wordcount\nHadoop'}
-hw_histogram_from_file(keys, "disaggregated_0.25.tput.avg.100g", load_path, "disaggregated_0_25_tput_100g", "Application", "Throughput (Gbps)", label_replacer=label_replacer)
+hw_histogram_from_file(keys, "disaggregated_0.25.tput.avg.100g", load_path, "disaggregated_0_25_tput_100g", "Application", "Goodput (Gbps)", label_replacer=label_replacer)
 
 #hw_histogram_from_file(keys, "latency_all_0_4.txt", load_path, "latency_all_0_4", "Application", "99th perc. FCT (us)", label_replacer=label_replacer)
 #hw_histogram_from_file(keys, "latency_all_0_8.txt", load_path, "latency_all_0_8", "Application", "99th perc. FCT (us)", label_replacer=label_replacer)
