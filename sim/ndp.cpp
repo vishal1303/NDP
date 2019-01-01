@@ -159,6 +159,7 @@ void NdpSrc::startflow(){
     
     _flight_size = 0;
     _first_window_count = 0;
+    eventlist().incrementNumOfBitsStarted((uint64_t)(_flow_size*8));
     while (_flight_size < _cwnd && _flight_size < _flow_size) {
 	send_packet(0);
 	_first_window_count++;
@@ -846,7 +847,8 @@ void NdpSrc::doNextEvent() {
 
 	retransmit_packet();
     } else {
-	cout << "Starting flow" << endl;
+	cout << "Starting flow, size = " << _flow_size << endl;
+    eventlist().incrementNumOfFlowsStarted();
 	startflow();
     }
 }
@@ -1039,6 +1041,7 @@ void NdpSink::receivePacket(Packet& pkt) {
     p->free();
   
     _total_received+=size;
+    _src->eventlist().incrementNumOfBitsReceived((uint64_t)(size*8));
 
     if (seqno == _cumulative_ack+1) { // it's the next expected seq no
 	_cumulative_ack = seqno + size - 1;

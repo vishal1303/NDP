@@ -21,6 +21,12 @@ class EventSource : public Logged {
 class EventList {
 public:
     EventList();
+    void incrementNumOfBitsStarted(int64_t bits);
+    int64_t getNumOfBitsStarted();
+    void incrementNumOfBitsReceived(int64_t bits);
+    int64_t getNumOfBitsReceived();
+    void incrementNumOfFlowsStarted();
+    int getNumOfFlowsStarted();
     void incrementNumOfFlowsFinished();
     int getNumOfFlowsFinished();
     void setEndtime(simtime_picosec endtime); // end simulation at endtime (rather than forever)
@@ -37,6 +43,9 @@ private:
     typedef multimap <simtime_picosec, EventSource*> pendingsources_t;
     pendingsources_t _pendingsources;
     int _num_of_flows_finished;
+    int _num_of_flows_started;
+    int64_t _num_of_bits_received;
+    int64_t _num_of_bits_started;
 };
 
 #endif

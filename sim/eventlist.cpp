@@ -1,13 +1,52 @@
 // -*- c-basic-offset: 4; tab-width: 8; indent-tabs-mode: t -*-        
 
 #include "eventlist.h"
-//#include <iostream>
+#include <iostream>
 
 EventList::EventList()
     : _endtime(0),
       _lasteventtime(0),
-      _num_of_flows_finished(0)
+      _num_of_flows_finished(0),
+      _num_of_flows_started(0),
+      _num_of_bits_received(0),
+      _num_of_bits_started(0)
 {
+}
+
+void
+EventList::incrementNumOfBitsStarted(int64_t bits)
+{
+    _num_of_bits_started += bits;
+}
+
+int64_t
+EventList::getNumOfBitsStarted()
+{
+    return _num_of_bits_started;
+}
+
+void
+EventList::incrementNumOfBitsReceived(int64_t bits)
+{
+    _num_of_bits_received += bits;
+}
+
+int64_t
+EventList::getNumOfBitsReceived()
+{
+    return _num_of_bits_received;
+}
+
+void
+EventList::incrementNumOfFlowsStarted()
+{
+    _num_of_flows_started++;
+}
+
+int
+EventList::getNumOfFlowsStarted()
+{
+    return _num_of_flows_started;
 }
 
 void

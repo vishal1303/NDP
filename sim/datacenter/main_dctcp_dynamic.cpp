@@ -48,6 +48,7 @@ unsigned int subflow_count = 1;
 
 string ntoa(double n);
 string itoa(uint64_t n);
+void log_utilization(long long unsigned curr_time);
 
 //#define SWITCH_BUFFER (SERVICE * RTT / 1000)
 #define USE_FIRST_FIT 0
@@ -86,6 +87,7 @@ private:
 int main(int argc, char **argv) {
     double endtime = 24*60*60; //in seconds
     int num_of_flows_to_finish = 1000000;
+    int num_of_flows_to_start = 1000000;
     Clock c(timeFromSec(5 / 100.), eventlist);
     int no_of_conns = 0, no_of_nodes = DEFAULT_NODES, cwnd = 15,
 	pktsize=1500, queuesize=8;
@@ -138,7 +140,11 @@ int main(int argc, char **argv) {
             i++;
 	} else if (!strcmp(argv[i],"-numflowsfinish")){
             num_of_flows_to_finish = atoi(argv[i+1]);
-            cout << "finish after "<< num_of_flows_to_finish << " flows"<<endl;
+            cout << "finish after "<< num_of_flows_to_finish << " flows have finished"<<endl;
+            i++;
+	} else if (!strcmp(argv[i],"-numflowsstart")){
+            num_of_flows_to_start = atoi(argv[i+1]);
+            cout << "finish after "<< num_of_flows_to_start << " flows have started"<<endl;
             i++;
 	} else
 	    exit_error(argv[0]);
@@ -264,7 +270,6 @@ int main(int argc, char **argv) {
 
     // used just to print out stats data at the end
     list <const Route*> routes;
-    list <TcpSink*> sinks;
 
     string line, id, src_string, dest_string, flowsize_string, starttime_string;
     ifstream input_file(inp_filename);
@@ -428,7 +433,6 @@ int main(int argc, char **argv) {
 
                 sinkLogger.monitorSink(tcpSnk);
 
-                sinks.push_back(tcpSnk);
             }
         }
     }
@@ -446,28 +450,20 @@ int main(int argc, char **argv) {
     logfile.write("# rtt =" + ntoa(rtt));
 
     // GO!
-    int cntr = 100;
+    long cntr = 100; //log every 100us
     while (eventlist.doNextEvent()) {
-        if (eventlist.getNumOfFlowsFinished() == num_of_flows_to_finish) {
+        long long unsigned curr_time = eventlist.now();
+        if (curr_time/1000000 >= cntr) {
+            cntr = cntr + 100;
+            log_utilization(curr_time);
+        }
+
+        if (eventlist.getNumOfFlowsFinished() >= num_of_flows_to_finish
+        || eventlist.getNumOfFlowsStarted() >= num_of_flows_to_start) {
+            log_utilization(curr_time);
             break;
-        } else {
-            long long unsigned curr_time = eventlist.now();
-            if (curr_time/1000000 >= cntr) {
-                cntr = cntr + 100;
-                double total_bits_recvd = 0.0;
-                int cnt = 0;
-                while (cnt < sinks.size()) {
-                    TcpSink* s = sinks.back();
-                    sinks.pop_back();
-                    sinks.push_front(s);
-                    cnt++;
-                    total_bits_recvd += (s->_packets*8.0);
-                }
-                printf("******************************* size = %d cnt = %d t = %llu us, utilization = %lf\n", sinks.size(), cnt, curr_time/1000000, (total_bits_recvd/(eventlist.now()/10000.0))/1);
-            }
         }
     }
-
     cout << "Done" << endl;
 }
 
@@ -481,4 +477,11 @@ string itoa(uint64_t n) {
     stringstream s;
     s << n;
     return s.str();
+}
+
+void log_utilization(long long unsigned curr_time) {
+    double utilization = ((double)eventlist.getNumOfBitsReceived() / (double)eventlist.getNumOfBitsStarted()) * 100.0;
+    printf("******************************* t = %llu us bits recvd = %ld bits started = %ld utilization = %lf utilization = %lf\n",
+            curr_time/1000000, eventlist.getNumOfBitsReceived(), eventlist.getNumOfBitsStarted(), utilization,
+            (eventlist.getNumOfBitsReceived()/(eventlist.now()/10000.0))/1);
 }

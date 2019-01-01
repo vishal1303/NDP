@@ -94,6 +94,8 @@ TcpSrc::startflow() {
     _unacked = _cwnd;
     _established = false;
 
+    eventlist().incrementNumOfBitsStarted((uint64_t)(_flow_size*8));
+
     send_packets();
 }
 
@@ -607,7 +609,8 @@ void TcpSrc::doNextEvent() {
 	if (_mSrc)
 	    _mSrc->window_changed();
     } else {
-	//cout << "Starting flow" << endl;
+	cout << "Starting flow" << endl;
+    eventlist().incrementNumOfFlowsStarted();
 	startflow();
     }
 }
@@ -649,6 +652,7 @@ TcpSink::receivePacket(Packet& pkt) {
     p->free();
 
     _packets+= p->size();
+    _src->eventlist().incrementNumOfBitsReceived((uint64_t)(p->size()*8));
 
     //cout << "Sink recv seqno " << seqno << " size " << size << endl;
 
