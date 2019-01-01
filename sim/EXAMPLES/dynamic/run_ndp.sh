@@ -74,7 +74,7 @@ longflowsize=1 #in bytes
 #done
 
 #ALL-TO-ALL
-for ((i=144;i<=144;i=i+1));
+for ((i=16;i<=16;i=i+1));
 do
     echo ../../datacenter/htsim_ndp_dynamic -o ndp_logfile -i all-to-all-144/${i}.dat -nodes ${no_of_nodes} -cwnd ${cwnd} -pktsize ${pktsize} -queuesize ${queuesize} -endtime ${endtime} -numflowsfinish ${flowsfinish} -strat perm
     ../../datacenter/htsim_ndp_dynamic -o ndp_logfile -i all-to-all-144/${i}.dat -nodes ${no_of_nodes} -cwnd ${cwnd} -pktsize ${pktsize} -queuesize ${queuesize} > ndp_debug -endtime ${endtime} -numflowsfinish ${flowsfinish} -strat perm

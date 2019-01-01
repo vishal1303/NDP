@@ -491,7 +491,7 @@ int main(int argc, char **argv) {
                     cnt++;
                     total_bits_recvd += (s->total_received()*8.0);
                 }
-                printf("******************************* size = %d cnt = %d t = %llu us, utilization = %lf\n", sinks.size(), cnt, curr_time/1000000, (total_bits_recvd/(eventlist.now()/10000.0))/100);
+                printf("******************************* size = %d cnt = %d t = %llu us, utilization = %lf\n", sinks.size(), cnt, curr_time/1000000, (total_bits_recvd/(eventlist.now()/10000.0))/16);
             }
         }
     }
