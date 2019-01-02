@@ -13,6 +13,8 @@ flowsstart=100000 #stop experiment after these many flows have started
 shortflowsize=102400 #in bytes
 longflowsize=1000000 #in bytes
 
+propagationdelay=800 #200ns per hop
+
 #TEST
 #for ((i=0;i<=0;i=i+1));
 #do
@@ -22,8 +24,8 @@ longflowsize=1000000 #in bytes
 #    ../../parse_output dcqcn_logfile -dcqcn -show > dcqcn_rate
 #    echo "Extracting FCT and Rates: python process_data.py dcqcn_debug dcqcn_rate test/${i}.csv dcqcn ${linkspeed}"
 #    python process_data.py dcqcn_debug dcqcn_rate test/${i}.csv dcqcn ${linkspeed}
-#    echo "Data cleaning: python extract_fct_tput.py test/${i}.csv.dcqcn ${shortflowsize} ${longflowsize}"
-#    python extract_fct_tput.py test/${i}.csv.dcqcn ${shortflowsize} ${longflowsize}
+#    echo "Data cleaning: python data_cleaning.py test/${i}.csv.dcqcn ${shortflowsize} ${longflowsize} ${pktsize} ${propagationdelay} ${linkspeed}"
+#    python data_cleaning.py test/${i}.csv.dcqcn ${shortflowsize} ${longflowsize} ${pktsize} ${propagationdelay} ${linkspeed}
 #done
 
 #PERM SHORT FLOWS
@@ -35,8 +37,8 @@ longflowsize=1000000 #in bytes
 #    ../../parse_output dcqcn_logfile -dcqcn -show > dcqcn_rate
 #    echo "Extracting FCT and Rates: python process_data.py dcqcn_debug dcqcn_rate perm-shortflows-512/${i}.csv dcqcn ${linkspeed}"
 #    python process_data.py dcqcn_debug dcqcn_rate perm-shortflows-512/${i}.csv dcqcn ${linkspeed}
-#    echo "Data cleaning: python extract_fct_tput.py perm-shortflows-512/${i}.csv.dcqcn ${shortflowsize} ${longflowsize}"
-#    python extract_fct_tput.py perm-shortflows-512/${i}.csv.dcqcn ${shortflowsize} ${longflowsize}
+#    echo "Data cleaning: python data_cleaning.py perm-shortflows-512/${i}.csv.dcqcn ${shortflowsize} ${longflowsize} ${pktsize} ${propagationdelay} ${linkspeed}"
+#    python data_cleaning.py perm-shortflows-512/${i}.csv.dcqcn ${shortflowsize} ${longflowsize} ${pktsize} ${propagationdelay} ${linkspeed}
 #done
 
 #PREDICTABILITY
@@ -48,8 +50,8 @@ longflowsize=1000000 #in bytes
 #    ../../parse_output dcqcn_logfile -dcqcn -show > dcqcn_rate
 #    echo "Extracting FCT and Rates: python process_data_1.py dcqcn_debug dcqcn_rate predictability/${i}.csv.new dcqcn ${linkspeed} 511 0"
 #    python process_data_1.py dcqcn_debug dcqcn_rate predictability/${i}.csv.new dcqcn ${linkspeed} 511 0
-#    echo "Data cleaning: python extract_fct_tput.py predictability/${i}.csv.new.dcqcn ${shortflowsize} ${longflowsize}"
-#    python extract_fct_tput.py predictability/${i}.csv.new.dcqcn ${shortflowsize} ${longflowsize}
+#    echo "Data cleaning: python data_cleaning.py predictability/${i}.csv.new.dcqcn ${shortflowsize} ${longflowsize} ${pktsize} ${propagationdelay} ${linkspeed}"
+#    python data_cleaning.py predictability/${i}.csv.new.dcqcn ${shortflowsize} ${longflowsize} ${pktsize} ${propagationdelay} ${linkspeed}
 #done
 
 #INCAST
@@ -105,8 +107,8 @@ longflowsize=1000000 #in bytes
 #    ../../parse_output dcqcn_logfile -dcqcn -show > dcqcn_rate
 #    echo "Extracting FCT and Rates: python process_data.py dcqcn_debug dcqcn_rate dc_workload_100G/log_flows_fattree_load-${i}.csv dcqcn ${linkspeed}"
 #    python process_data.py dcqcn_debug dcqcn_rate dc_workload_100G/log_flows_fattree_load-${i}.csv dcqcn ${linkspeed}
-#    echo "Data cleaning: python extract_fct_tput.py dc_workload_100G/log_flows_fattree_load-${i}.csv.dcqcn ${shortflowsize} ${longflowsize}"
-#    python extract_fct_tput.py dc_workload_100G/log_flows_fattree_load-${i}.csv.dcqcn ${shortflowsize} ${longflowsize}
+#    echo "Data cleaning: python data_cleaning.py dc_workload_100G/log_flows_fattree_load-${i}.csv.dcqcn ${shortflowsize} ${longflowsize} ${pktsize} ${propagationdelay} ${linkspeed}"
+#    python data_cleaning.py dc_workload_100G/log_flows_fattree_load-${i}.csv.dcqcn ${shortflowsize} ${longflowsize} ${pktsize} ${propagationdelay} ${linkspeed}
 #done
 
 #Disaggregated Workloads
@@ -118,8 +120,8 @@ longflowsize=1000000 #in bytes
 #    ../../parse_output dcqcn_logfile -dcqcn -show > dcqcn_rate
 #    echo "Extracting FCT and Rates: python process_data.py dcqcn_debug dcqcn_rate disaggregated_workload_100G/${fname} dcqcn ${linkspeed}"
 #    python process_data.py dcqcn_debug dcqcn_rate disaggregated_workload_100G/${fname} dcqcn ${linkspeed}
-#    echo "Data cleaning: python extract_fct_tput.py disaggregated_workload_100G/${fname}.dcqcn ${shortflowsize} ${longflowsize}"
-#    python extract_fct_tput.py disaggregated_workload_100G/${fname}.dcqcn ${shortflowsize} ${longflowsize}
+#    echo "Data cleaning: python data_cleaning.py disaggregated_workload_100G/${fname}.dcqcn ${shortflowsize} ${longflowsize} ${pktsize} ${propagationdelay} ${linkspeed}"
+#    python data_cleaning.py disaggregated_workload_100G/${fname}.dcqcn ${shortflowsize} ${longflowsize} ${pktsize} ${propagationdelay} ${linkspeed}
 #done
 #for fname in bdb_nodes=512_flows=2000000_load=0.10.csv graphlab_nodes=512_flows=2000000_load=0.10.csv memcached_nodes=512_flows=2000000_load=0.10.csv terasort_hadoop_nodes=512_flows=2000000_load=0.10.csv terasort_spark_nodes=512_flows=2000000_load=0.10.csv ;
 #do
@@ -129,8 +131,8 @@ longflowsize=1000000 #in bytes
 #    ../../parse_output dcqcn_logfile -dcqcn -show > dcqcn_rate
 #    echo "Extracting FCT and Rates: python process_data.py dcqcn_debug dcqcn_rate disaggregated_workload_100G/${fname} dcqcn ${linkspeed}"
 #    python process_data.py dcqcn_debug dcqcn_rate disaggregated_workload_100G/${fname} dcqcn ${linkspeed}
-#    echo "Data cleaning: python extract_fct_tput.py disaggregated_workload_100G/${fname}.dcqcn ${shortflowsize} ${longflowsize}"
-#    python extract_fct_tput.py disaggregated_workload_100G/${fname}.dcqcn ${shortflowsize} ${longflowsize}
+#    echo "Data cleaning: python data_cleaning.py disaggregated_workload_100G/${fname}.dcqcn ${shortflowsize} ${longflowsize} ${pktsize} ${propagationdelay} ${linkspeed}"
+#    python data_cleaning.py disaggregated_workload_100G/${fname}.dcqcn ${shortflowsize} ${longflowsize} ${pktsize} ${propagationdelay} ${linkspeed}
 #done
 
 #ALL-TO-ALL-144-ADITYA
@@ -143,8 +145,6 @@ do
     ../../parse_output dcqcn_logfile -dcqcn -show > dcqcn_rate
     echo "Extracting FCT and Rates: python process_data.py dcqcn_debug dcqcn_rate all-to-all-144-aditya/trace-${i}.txt.csv dcqcn ${linkspeed}"
     python process_data.py dcqcn_debug dcqcn_rate all-to-all-144-aditya/trace-${i}.txt.csv dcqcn ${linkspeed}
-    echo "Data cleaning: python extract_fct_tput.py all-to-all-144-aditya/trace-${i}.txt.csv.dcqcn ${shortflowsize} ${longflowsize}"
-    python extract_fct_tput.py all-to-all-144-aditya/trace-${i}.txt.csv.dcqcn ${shortflowsize} ${longflowsize}
 done
 
 #ALL-TO-ALL-144-dcqcn
@@ -157,8 +157,6 @@ do
     ../../parse_output dcqcn_logfile -dcqcn -show > dcqcn_rate
     echo "Extracting FCT and Rates: python process_data.py dcqcn_debug dcqcn_rate all-to-all-144-dcqcn/trace-${i}.txt.csv dcqcn ${linkspeed}"
     python process_data.py dcqcn_debug dcqcn_rate all-to-all-144-dcqcn/trace-${i}.txt.csv dcqcn ${linkspeed}
-    echo "Data cleaning: python extract_fct_tput.py all-to-all-144-dcqcn/trace-${i}.txt.csv.dcqcn ${shortflowsize} ${longflowsize}"
-    python extract_fct_tput.py all-to-all-144-dcqcn/trace-${i}.txt.csv.dcqcn ${shortflowsize} ${longflowsize}
 done
 
 #ALL-TO-ALL-144-datamining
@@ -171,8 +169,6 @@ do
     ../../parse_output dcqcn_logfile -dcqcn -show > dcqcn_rate
     echo "Extracting FCT and Rates: python process_data.py dcqcn_debug dcqcn_rate all-to-all-144-datamining/trace-${i}.txt.csv dcqcn ${linkspeed}"
     python process_data.py dcqcn_debug dcqcn_rate all-to-all-144-datamining/trace-${i}.txt.csv dcqcn ${linkspeed}
-    echo "Data cleaning: python extract_fct_tput.py all-to-all-144-datamining/trace-${i}.txt.csv.dcqcn ${shortflowsize} ${longflowsize}"
-    python extract_fct_tput.py all-to-all-144-datamining/trace-${i}.txt.csv.dcqcn ${shortflowsize} ${longflowsize}
 done
 
 #permutation-144-ADITYA
@@ -185,8 +181,6 @@ do
     ../../parse_output dcqcn_logfile -dcqcn -show > dcqcn_rate
     echo "Extracting FCT and Rates: python process_data.py dcqcn_debug dcqcn_rate permutation-144-aditya/trace-${i}.txt.csv dcqcn ${linkspeed}"
     python process_data.py dcqcn_debug dcqcn_rate permutation-144-aditya/trace-${i}.txt.csv dcqcn ${linkspeed}
-    echo "Data cleaning: python extract_fct_tput.py permutation-144-aditya/trace-${i}.txt.csv.dcqcn ${shortflowsize} ${longflowsize}"
-    python extract_fct_tput.py permutation-144-aditya/trace-${i}.txt.csv.dcqcn ${shortflowsize} ${longflowsize}
 done
 
 #permutation-144-dcqcn
@@ -199,8 +193,6 @@ do
     ../../parse_output dcqcn_logfile -dcqcn -show > dcqcn_rate
     echo "Extracting FCT and Rates: python process_data.py dcqcn_debug dcqcn_rate permutation-144-dcqcn/trace-${i}.txt.csv dcqcn ${linkspeed}"
     python process_data.py dcqcn_debug dcqcn_rate permutation-144-dcqcn/trace-${i}.txt.csv dcqcn ${linkspeed}
-    echo "Data cleaning: python extract_fct_tput.py permutation-144-dcqcn/trace-${i}.txt.csv.dcqcn ${shortflowsize} ${longflowsize}"
-    python extract_fct_tput.py permutation-144-dcqcn/trace-${i}.txt.csv.dcqcn ${shortflowsize} ${longflowsize}
 done
 
 #permutation-144-datamining
@@ -213,6 +205,4 @@ do
     ../../parse_output dcqcn_logfile -dcqcn -show > dcqcn_rate
     echo "Extracting FCT and Rates: python process_data.py dcqcn_debug dcqcn_rate permutation-144-datamining/trace-${i}.txt.csv dcqcn ${linkspeed}"
     python process_data.py dcqcn_debug dcqcn_rate permutation-144-datamining/trace-${i}.txt.csv dcqcn ${linkspeed}
-    echo "Data cleaning: python extract_fct_tput.py permutation-144-datamining/trace-${i}.txt.csv.dcqcn ${shortflowsize} ${longflowsize}"
-    python extract_fct_tput.py permutation-144-datamining/trace-${i}.txt.csv.dcqcn ${shortflowsize} ${longflowsize}
 done
