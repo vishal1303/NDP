@@ -37,8 +37,6 @@ for protocol in protocols:
                 slowdown = fct/ideal_fct
                 if (slowdown < 1.0):
                     slowdown = 1.0
-                if (slowdown > 100):
-                    print tokens[0]
                 for k in range(len(slowdown_bins)):
                     if (flowsize <= slowdown_bins[k]):
                         slowdown_list[k].append(slowdown)

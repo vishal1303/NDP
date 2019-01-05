@@ -12,6 +12,7 @@ inp = open(infilename, "r")
 for line in inp:
     tokens = line.split(',')
     flows[int(tokens[0].strip())] = [int(tokens[1].strip()), int(tokens[2].strip()), int(tokens[3].strip()), float(tokens[4].strip())]
+assert(87024 in flows)
 
 out = open(outfilename, "w")
 
@@ -20,13 +21,14 @@ for line in fct_file:
     tokens = line.split()
     if (len(tokens) > 2 and tokens[2] == "finished"):
         ID = int((tokens[1].split('-'))[1])
-        assert(ID in flows)
-        finish_time = float(tokens[4])*1000 - float(flows[ID][3])*1000000 # end-start in us
-        flowsize = int(flows[ID][2])*8 #in bits
-        rate = flowsize/(finish_time*1000) #in Gbps
-        out.write(str(ID)+","+str(flows[ID][0])+","+str(flows[ID][1])+","+str(flows[ID][2])+","+str(flows[ID][3])+","+str(finish_time)+ " us,"+str(rate)+ " Gbps")
-        out.write("\n")
-        del flows[ID]
+        #assert(ID in flows)
+        if (ID in flows):
+            finish_time = float(tokens[4])*1000 - float(flows[ID][3])*1000000 # end-start in us
+            flowsize = int(flows[ID][2])*8 #in bits
+            rate = flowsize/(finish_time*1000) #in Gbps
+            out.write(str(ID)+","+str(flows[ID][0])+","+str(flows[ID][1])+","+str(flows[ID][2])+","+str(flows[ID][3])+","+str(finish_time)+ " us,"+str(rate)+ " Gbps")
+            out.write("\n")
+            del flows[ID]
 fct_file.close()
 
 rate_file = open(rate_filename, "r")

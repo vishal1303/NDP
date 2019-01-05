@@ -16,7 +16,7 @@ for protocol in protocols:
             tokens = line.split()
             if (tokens[0] == '*******************************'):
                 utilization_val[count] = float(tokens[15])
-                assert(utilization_val[count] <= 100.0)
+        assert(utilization_val[count] <= 100.0)
         f.close()
         count += 1
     out = open(dirname+"/"+protocol+".utilization", "w")
