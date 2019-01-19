@@ -1,5 +1,6 @@
 import sys
 import numpy as np
+import os.path
 
 dirname = sys.argv[1]
 short_flow = int(sys.argv[2]) #in bytes
@@ -8,8 +9,7 @@ pktsize = int(sys.argv[4]) #in bytes
 propagation_delay_in_ns = int(sys.argv[5])
 link_bandwidth = int(sys.argv[6])
 
-#protocols = ['ndp', 'dctcp', 'dcqcn']
-protocols = ['ndp']
+protocols = ['ndp', 'dctcp']
 load_val = [20, 40, 60, 80]
 
 slowdown_bins = [10000, 50000, 100000, 500000, 1000000, 5000000, 10000000]
@@ -21,6 +21,9 @@ slowdown_avg = [0.0 for i in range(len(slowdown_bins)+1)]
 for protocol in protocols:
     for load in load_val:
         filename = dirname+"/"+"trace-"+str(load)+".txt.csv."+protocol
+        if (not os.path.isfile(filename)):
+            print "Error: " + filename + " does not exist!"
+            continue
         inp = open(filename, "r")
 
         sorted_fct = []

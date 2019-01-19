@@ -1,17 +1,25 @@
 import sys
+import os.path
 
 dirname = sys.argv[1] # e.g. experiments/all-to-all-144
 
-#protocols = ['ndp', 'dctcp', 'dcqcn']
-protocols = ['ndp']
+protocols = ['ndp', 'dctcp']
 
 for protocol in protocols:
     f = [None for i in range(4)]
     d = {0:20, 1:40, 2:60, 3:80}
     for j in ["mean", "99"]:
+        file_not_exists = 0
         for i in range(4):
-            f[i] = open(dirname+"/"+protocol+"-"+str(d[i])+".txt.out.slowdown."+j, "r")
+            filename = dirname+"/"+protocol+"-"+str(d[i])+".txt.out.slowdown."+j
+            if (not os.path.isfile(filename)):
+                print "Error: " + filename + " does not exist!"
+                file_not_exists = 1
+            else:
+                f[i] = open(filename, "r")
 
+        if file_not_exists:
+            continue
         out = open(dirname+"/"+protocol+".slowdown."+j, "w")
 
         slowdown = [["0" for j in range(4)] for i in range(8)]

@@ -1,9 +1,9 @@
 import sys
+import os.path
 
 dirname = sys.argv[1]
 
-#protocols = ['ndp', 'dctcp', 'dcqcn']
-protocols = ['ndp']
+protocols = ['ndp', 'dctcp']
 load_val = [20, 40, 60, 80]
 
 utilization_val = [0.0 for i in range(len(load_val))]
@@ -11,7 +11,11 @@ utilization_val = [0.0 for i in range(len(load_val))]
 for protocol in protocols:
     count = 0
     for i in load_val:
-        f = open(dirname+"/"+"trace-"+str(i)+".txt.csv."+protocol+".debug", "r")
+        filename = dirname+"/"+"trace-"+str(i)+".txt.csv."+protocol+".debug"
+        if (not os.path.isfile(filename)):
+            print "Error: " + filename + " does not exist!"
+            continue
+        f = open(filename, "r")
         for line in f:
             tokens = line.split()
             if (tokens[0] == '*******************************'):
