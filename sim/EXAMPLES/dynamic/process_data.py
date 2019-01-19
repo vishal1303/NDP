@@ -12,7 +12,6 @@ inp = open(infilename, "r")
 for line in inp:
     tokens = line.split(',')
     flows[int(tokens[0].strip())] = [int(tokens[1].strip()), int(tokens[2].strip()), int(tokens[3].strip()), float(tokens[4].strip())]
-assert(87024 in flows)
 
 out = open(outfilename, "w")
 

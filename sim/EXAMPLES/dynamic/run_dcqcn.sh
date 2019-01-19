@@ -77,15 +77,15 @@ propagationdelay=800 #200ns per hop
 #done
 
 #PERMUTATION-INCAST
-#for ((i=144;i<=144;i=i+1));
-#do
-#    echo ../../datacenter/htsim_dcqcn_dynamic -o dcqcn_logfile -i perm-incast-144/${i}.dat -nodes ${no_of_nodes} -cwnd ${cwnd} -pktsize ${pktsize} -queuesize ${queuesize} -endtime ${endtime}
-#    ../../datacenter/htsim_dcqcn_dynamic -o dcqcn_logfile -i perm-incast-144/${i}.dat -nodes ${no_of_nodes} -cwnd ${cwnd} -pktsize ${pktsize} -queuesize ${queuesize} > dcqcn_debug -endtime ${endtime}
-#    echo "Parsing the logfile: ../../parse_output dcqcn_logfile -dcqcn -show > dcqcn_rate"
-#    ../../parse_output dcqcn_logfile -dcqcn -show > dcqcn_rate
-#    echo "Extracting FCT and Rates: python process_data.py dcqcn_debug dcqcn_rate perm-incast-144/${i}.dat dcqcn ${linkspeed}"
-#    python process_data.py dcqcn_debug dcqcn_rate perm-incast-144/${i}.dat dcqcn ${linkspeed}
-#done
+for ((i=144;i<=144;i=i+1));
+do
+    echo ../../datacenter/htsim_dcqcn_dynamic -o dcqcn_logfile -i perm-incast-144/${i}.dat -nodes ${no_of_nodes} -cwnd ${cwnd} -pktsize ${pktsize} -queuesize ${queuesize} -endtime ${endtime}
+    ../../datacenter/htsim_dcqcn_dynamic -o dcqcn_logfile -i perm-incast-144/${i}.dat -nodes ${no_of_nodes} -cwnd ${cwnd} -pktsize ${pktsize} -queuesize ${queuesize} > dcqcn_debug -endtime ${endtime}
+    echo "Parsing the logfile: ../../parse_output dcqcn_logfile -dcqcn -show > dcqcn_rate"
+    ../../parse_output dcqcn_logfile -dcqcn -show > dcqcn_rate
+    echo "Extracting FCT and Rates: python process_data.py dcqcn_debug dcqcn_rate perm-incast-144/${i}.dat dcqcn ${linkspeed}"
+    python process_data.py dcqcn_debug dcqcn_rate perm-incast-144/${i}.dat dcqcn ${linkspeed}
+done
 
 #ALL-TO-ALL
 #for ((i=128;i<=128;i=i+1));
@@ -136,73 +136,73 @@ propagationdelay=800 #200ns per hop
 #done
 
 #ALL-TO-ALL-144-ADITYA
-for i in 20 40 60 80
-do
-    echo ../../datacenter/htsim_dcqcn_dynamic -o dcqcn_logfile -i all-to-all-144-aditya/trace-${i}.txt.csv -nodes ${no_of_nodes} -cwnd ${cwnd} -pktsize ${pktsize} -queuesize ${queuesize} -numflowsfinish ${flowsfinish} -numflowsstart ${flowsstart}
-    ../../datacenter/htsim_dcqcn_dynamic -o dcqcn_logfile -i all-to-all-144-aditya/trace-${i}.txt.csv -nodes ${no_of_nodes} -cwnd ${cwnd} -pktsize ${pktsize} -queuesize ${queuesize} -numflowsfinish ${flowsfinish} -numflowsstart ${flowsstart} > dcqcn_debug
-    cp dcqcn_debug all-to-all-144-aditya/trace-${i}.txt.csv.dcqcn.debug
-    echo "Parsing the logfile: ../../parse_output dcqcn_logfile -dcqcn -show > dcqcn_rate"
-    ../../parse_output dcqcn_logfile -dcqcn -show > dcqcn_rate
-    echo "Extracting FCT and Rates: python process_data.py dcqcn_debug dcqcn_rate all-to-all-144-aditya/trace-${i}.txt.csv dcqcn ${linkspeed}"
-    python process_data.py dcqcn_debug dcqcn_rate all-to-all-144-aditya/trace-${i}.txt.csv dcqcn ${linkspeed}
-done
-
-#ALL-TO-ALL-144-dctcp
-for i in 20 40 60 80
-do
-    echo ../../datacenter/htsim_dcqcn_dynamic -o dcqcn_logfile -i all-to-all-144-dctcp/trace-${i}.txt.csv -nodes ${no_of_nodes} -cwnd ${cwnd} -pktsize ${pktsize} -queuesize ${queuesize} -numflowsfinish ${flowsfinish} -numflowsstart ${flowsstart}
-    ../../datacenter/htsim_dcqcn_dynamic -o dcqcn_logfile -i all-to-all-144-dctcp/trace-${i}.txt.csv -nodes ${no_of_nodes} -cwnd ${cwnd} -pktsize ${pktsize} -queuesize ${queuesize} -numflowsfinish ${flowsfinish} -numflowsstart ${flowsstart} > dcqcn_debug
-    cp dcqcn_debug all-to-all-144-dctcp/trace-${i}.txt.csv.dcqcn.debug
-    echo "Parsing the logfile: ../../parse_output dcqcn_logfile -dcqcn -show > dcqcn_rate"
-    ../../parse_output dcqcn_logfile -dcqcn -show > dcqcn_rate
-    echo "Extracting FCT and Rates: python process_data.py dcqcn_debug dcqcn_rate all-to-all-144-dctcp/trace-${i}.txt.csv dcqcn ${linkspeed}"
-    python process_data.py dcqcn_debug dcqcn_rate all-to-all-144-dctcp/trace-${i}.txt.csv dcqcn ${linkspeed}
-done
-
-#ALL-TO-ALL-144-datamining
-for i in 20 40 60 80
-do
-    echo ../../datacenter/htsim_dcqcn_dynamic -o dcqcn_logfile -i all-to-all-144-datamining/trace-${i}.txt.csv -nodes ${no_of_nodes} -cwnd ${cwnd} -pktsize ${pktsize} -queuesize ${queuesize} -numflowsfinish ${flowsfinish} -numflowsstart ${flowsstart}
-    ../../datacenter/htsim_dcqcn_dynamic -o dcqcn_logfile -i all-to-all-144-datamining/trace-${i}.txt.csv -nodes ${no_of_nodes} -cwnd ${cwnd} -pktsize ${pktsize} -queuesize ${queuesize} -numflowsfinish ${flowsfinish} -numflowsstart ${flowsstart} > dcqcn_debug
-    cp dcqcn_debug all-to-all-144-datamining/trace-${i}.txt.csv.dcqcn.debug
-    echo "Parsing the logfile: ../../parse_output dcqcn_logfile -dcqcn -show > dcqcn_rate"
-    ../../parse_output dcqcn_logfile -dcqcn -show > dcqcn_rate
-    echo "Extracting FCT and Rates: python process_data.py dcqcn_debug dcqcn_rate all-to-all-144-datamining/trace-${i}.txt.csv dcqcn ${linkspeed}"
-    python process_data.py dcqcn_debug dcqcn_rate all-to-all-144-datamining/trace-${i}.txt.csv dcqcn ${linkspeed}
-done
-
-#permutation-144-ADITYA
-for i in 20 40 60 80
-do
-    echo ../../datacenter/htsim_dcqcn_dynamic -o dcqcn_logfile -i permutation-144-aditya/trace-${i}.txt.csv -nodes ${no_of_nodes} -cwnd ${cwnd} -pktsize ${pktsize} -queuesize ${queuesize} -numflowsfinish ${flowsfinish} -numflowsstart ${flowsstart}
-    ../../datacenter/htsim_dcqcn_dynamic -o dcqcn_logfile -i permutation-144-aditya/trace-${i}.txt.csv -nodes ${no_of_nodes} -cwnd ${cwnd} -pktsize ${pktsize} -queuesize ${queuesize} -numflowsfinish ${flowsfinish} -numflowsstart ${flowsstart} > dcqcn_debug
-    cp dcqcn_debug permutation-144-aditya/trace-${i}.txt.csv.dcqcn.debug
-    echo "Parsing the logfile: ../../parse_output dcqcn_logfile -dcqcn -show > dcqcn_rate"
-    ../../parse_output dcqcn_logfile -dcqcn -show > dcqcn_rate
-    echo "Extracting FCT and Rates: python process_data.py dcqcn_debug dcqcn_rate permutation-144-aditya/trace-${i}.txt.csv dcqcn ${linkspeed}"
-    python process_data.py dcqcn_debug dcqcn_rate permutation-144-aditya/trace-${i}.txt.csv dcqcn ${linkspeed}
-done
-
-#permutation-144-dctcp
-for i in 20 40 60 80
-do
-    echo ../../datacenter/htsim_dcqcn_dynamic -o dcqcn_logfile -i permutation-144-dctcp/trace-${i}.txt.csv -nodes ${no_of_nodes} -cwnd ${cwnd} -pktsize ${pktsize} -queuesize ${queuesize} -numflowsfinish ${flowsfinish} -numflowsstart ${flowsstart}
-    ../../datacenter/htsim_dcqcn_dynamic -o dcqcn_logfile -i permutation-144-dctcp/trace-${i}.txt.csv -nodes ${no_of_nodes} -cwnd ${cwnd} -pktsize ${pktsize} -queuesize ${queuesize} -numflowsfinish ${flowsfinish} -numflowsstart ${flowsstart} > dcqcn_debug
-    cp dcqcn_debug permutation-144-dctcp/trace-${i}.txt.csv.dcqcn.debug
-    echo "Parsing the logfile: ../../parse_output dcqcn_logfile -dcqcn -show > dcqcn_rate"
-    ../../parse_output dcqcn_logfile -dcqcn -show > dcqcn_rate
-    echo "Extracting FCT and Rates: python process_data.py dcqcn_debug dcqcn_rate permutation-144-dctcp/trace-${i}.txt.csv dcqcn ${linkspeed}"
-    python process_data.py dcqcn_debug dcqcn_rate permutation-144-dctcp/trace-${i}.txt.csv dcqcn ${linkspeed}
-done
-
-#permutation-144-datamining
-for i in 20 40 60 80
-do
-    echo ../../datacenter/htsim_dcqcn_dynamic -o dcqcn_logfile -i permutation-144-datamining/trace-${i}.txt.csv -nodes ${no_of_nodes} -cwnd ${cwnd} -pktsize ${pktsize} -queuesize ${queuesize} -numflowsfinish ${flowsfinish} -numflowsstart ${flowsstart}
-    ../../datacenter/htsim_dcqcn_dynamic -o dcqcn_logfile -i permutation-144-datamining/trace-${i}.txt.csv -nodes ${no_of_nodes} -cwnd ${cwnd} -pktsize ${pktsize} -queuesize ${queuesize} -numflowsfinish ${flowsfinish} -numflowsstart ${flowsstart} > dcqcn_debug
-    cp dcqcn_debug permutation-144-datamining/trace-${i}.txt.csv.dcqcn.debug
-    echo "Parsing the logfile: ../../parse_output dcqcn_logfile -dcqcn -show > dcqcn_rate"
-    ../../parse_output dcqcn_logfile -dcqcn -show > dcqcn_rate
-    echo "Extracting FCT and Rates: python process_data.py dcqcn_debug dcqcn_rate permutation-144-datamining/trace-${i}.txt.csv dcqcn ${linkspeed}"
-    python process_data.py dcqcn_debug dcqcn_rate permutation-144-datamining/trace-${i}.txt.csv dcqcn ${linkspeed}
-done
+#for i in 20 40 60 80
+#do
+#    echo ../../datacenter/htsim_dcqcn_dynamic -o dcqcn_logfile -i all-to-all-144-aditya/trace-${i}.txt.csv -nodes ${no_of_nodes} -cwnd ${cwnd} -pktsize ${pktsize} -queuesize ${queuesize} -numflowsfinish ${flowsfinish} -numflowsstart ${flowsstart}
+#    ../../datacenter/htsim_dcqcn_dynamic -o dcqcn_logfile -i all-to-all-144-aditya/trace-${i}.txt.csv -nodes ${no_of_nodes} -cwnd ${cwnd} -pktsize ${pktsize} -queuesize ${queuesize} -numflowsfinish ${flowsfinish} -numflowsstart ${flowsstart} > dcqcn_debug
+#    cp dcqcn_debug all-to-all-144-aditya/trace-${i}.txt.csv.dcqcn.debug
+#    echo "Parsing the logfile: ../../parse_output dcqcn_logfile -dcqcn -show > dcqcn_rate"
+#    ../../parse_output dcqcn_logfile -dcqcn -show > dcqcn_rate
+#    echo "Extracting FCT and Rates: python process_data.py dcqcn_debug dcqcn_rate all-to-all-144-aditya/trace-${i}.txt.csv dcqcn ${linkspeed}"
+#    python process_data.py dcqcn_debug dcqcn_rate all-to-all-144-aditya/trace-${i}.txt.csv dcqcn ${linkspeed}
+#done
+#
+##ALL-TO-ALL-144-dctcp
+#for i in 20 40 60 80
+#do
+#    echo ../../datacenter/htsim_dcqcn_dynamic -o dcqcn_logfile -i all-to-all-144-dctcp/trace-${i}.txt.csv -nodes ${no_of_nodes} -cwnd ${cwnd} -pktsize ${pktsize} -queuesize ${queuesize} -numflowsfinish ${flowsfinish} -numflowsstart ${flowsstart}
+#    ../../datacenter/htsim_dcqcn_dynamic -o dcqcn_logfile -i all-to-all-144-dctcp/trace-${i}.txt.csv -nodes ${no_of_nodes} -cwnd ${cwnd} -pktsize ${pktsize} -queuesize ${queuesize} -numflowsfinish ${flowsfinish} -numflowsstart ${flowsstart} > dcqcn_debug
+#    cp dcqcn_debug all-to-all-144-dctcp/trace-${i}.txt.csv.dcqcn.debug
+#    echo "Parsing the logfile: ../../parse_output dcqcn_logfile -dcqcn -show > dcqcn_rate"
+#    ../../parse_output dcqcn_logfile -dcqcn -show > dcqcn_rate
+#    echo "Extracting FCT and Rates: python process_data.py dcqcn_debug dcqcn_rate all-to-all-144-dctcp/trace-${i}.txt.csv dcqcn ${linkspeed}"
+#    python process_data.py dcqcn_debug dcqcn_rate all-to-all-144-dctcp/trace-${i}.txt.csv dcqcn ${linkspeed}
+#done
+#
+##ALL-TO-ALL-144-datamining
+#for i in 20 40 60 80
+#do
+#    echo ../../datacenter/htsim_dcqcn_dynamic -o dcqcn_logfile -i all-to-all-144-datamining/trace-${i}.txt.csv -nodes ${no_of_nodes} -cwnd ${cwnd} -pktsize ${pktsize} -queuesize ${queuesize} -numflowsfinish ${flowsfinish} -numflowsstart ${flowsstart}
+#    ../../datacenter/htsim_dcqcn_dynamic -o dcqcn_logfile -i all-to-all-144-datamining/trace-${i}.txt.csv -nodes ${no_of_nodes} -cwnd ${cwnd} -pktsize ${pktsize} -queuesize ${queuesize} -numflowsfinish ${flowsfinish} -numflowsstart ${flowsstart} > dcqcn_debug
+#    cp dcqcn_debug all-to-all-144-datamining/trace-${i}.txt.csv.dcqcn.debug
+#    echo "Parsing the logfile: ../../parse_output dcqcn_logfile -dcqcn -show > dcqcn_rate"
+#    ../../parse_output dcqcn_logfile -dcqcn -show > dcqcn_rate
+#    echo "Extracting FCT and Rates: python process_data.py dcqcn_debug dcqcn_rate all-to-all-144-datamining/trace-${i}.txt.csv dcqcn ${linkspeed}"
+#    python process_data.py dcqcn_debug dcqcn_rate all-to-all-144-datamining/trace-${i}.txt.csv dcqcn ${linkspeed}
+#done
+#
+##permutation-144-ADITYA
+#for i in 20 40 60 80
+#do
+#    echo ../../datacenter/htsim_dcqcn_dynamic -o dcqcn_logfile -i permutation-144-aditya/trace-${i}.txt.csv -nodes ${no_of_nodes} -cwnd ${cwnd} -pktsize ${pktsize} -queuesize ${queuesize} -numflowsfinish ${flowsfinish} -numflowsstart ${flowsstart}
+#    ../../datacenter/htsim_dcqcn_dynamic -o dcqcn_logfile -i permutation-144-aditya/trace-${i}.txt.csv -nodes ${no_of_nodes} -cwnd ${cwnd} -pktsize ${pktsize} -queuesize ${queuesize} -numflowsfinish ${flowsfinish} -numflowsstart ${flowsstart} > dcqcn_debug
+#    cp dcqcn_debug permutation-144-aditya/trace-${i}.txt.csv.dcqcn.debug
+#    echo "Parsing the logfile: ../../parse_output dcqcn_logfile -dcqcn -show > dcqcn_rate"
+#    ../../parse_output dcqcn_logfile -dcqcn -show > dcqcn_rate
+#    echo "Extracting FCT and Rates: python process_data.py dcqcn_debug dcqcn_rate permutation-144-aditya/trace-${i}.txt.csv dcqcn ${linkspeed}"
+#    python process_data.py dcqcn_debug dcqcn_rate permutation-144-aditya/trace-${i}.txt.csv dcqcn ${linkspeed}
+#done
+#
+##permutation-144-dctcp
+#for i in 20 40 60 80
+#do
+#    echo ../../datacenter/htsim_dcqcn_dynamic -o dcqcn_logfile -i permutation-144-dctcp/trace-${i}.txt.csv -nodes ${no_of_nodes} -cwnd ${cwnd} -pktsize ${pktsize} -queuesize ${queuesize} -numflowsfinish ${flowsfinish} -numflowsstart ${flowsstart}
+#    ../../datacenter/htsim_dcqcn_dynamic -o dcqcn_logfile -i permutation-144-dctcp/trace-${i}.txt.csv -nodes ${no_of_nodes} -cwnd ${cwnd} -pktsize ${pktsize} -queuesize ${queuesize} -numflowsfinish ${flowsfinish} -numflowsstart ${flowsstart} > dcqcn_debug
+#    cp dcqcn_debug permutation-144-dctcp/trace-${i}.txt.csv.dcqcn.debug
+#    echo "Parsing the logfile: ../../parse_output dcqcn_logfile -dcqcn -show > dcqcn_rate"
+#    ../../parse_output dcqcn_logfile -dcqcn -show > dcqcn_rate
+#    echo "Extracting FCT and Rates: python process_data.py dcqcn_debug dcqcn_rate permutation-144-dctcp/trace-${i}.txt.csv dcqcn ${linkspeed}"
+#    python process_data.py dcqcn_debug dcqcn_rate permutation-144-dctcp/trace-${i}.txt.csv dcqcn ${linkspeed}
+#done
+#
+##permutation-144-datamining
+#for i in 20 40 60 80
+#do
+#    echo ../../datacenter/htsim_dcqcn_dynamic -o dcqcn_logfile -i permutation-144-datamining/trace-${i}.txt.csv -nodes ${no_of_nodes} -cwnd ${cwnd} -pktsize ${pktsize} -queuesize ${queuesize} -numflowsfinish ${flowsfinish} -numflowsstart ${flowsstart}
+#    ../../datacenter/htsim_dcqcn_dynamic -o dcqcn_logfile -i permutation-144-datamining/trace-${i}.txt.csv -nodes ${no_of_nodes} -cwnd ${cwnd} -pktsize ${pktsize} -queuesize ${queuesize} -numflowsfinish ${flowsfinish} -numflowsstart ${flowsstart} > dcqcn_debug
+#    cp dcqcn_debug permutation-144-datamining/trace-${i}.txt.csv.dcqcn.debug
+#    echo "Parsing the logfile: ../../parse_output dcqcn_logfile -dcqcn -show > dcqcn_rate"
+#    ../../parse_output dcqcn_logfile -dcqcn -show > dcqcn_rate
+#    echo "Extracting FCT and Rates: python process_data.py dcqcn_debug dcqcn_rate permutation-144-datamining/trace-${i}.txt.csv dcqcn ${linkspeed}"
+#    python process_data.py dcqcn_debug dcqcn_rate permutation-144-datamining/trace-${i}.txt.csv dcqcn ${linkspeed}
+#done
