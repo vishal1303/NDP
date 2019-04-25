@@ -6,19 +6,39 @@ dirname = sys.argv[1]
 short_flow = int(sys.argv[2]) #in bytes
 long_flow = int(sys.argv[3]) #in bytes
 pktsize = int(sys.argv[4]) #in bytes
-propagation_delay_in_ns = int(sys.argv[5])
+propagation_delay_per_hop_in_ns = int(sys.argv[5])
 link_bandwidth = int(sys.argv[6])
 
-protocols = ['ndp', 'dctcp']
+protocols = ['ndp', 'dctcp', 'dcqcn']
 load_val = [20, 40, 60, 80]
 
-slowdown_bins = [10000, 50000, 100000, 500000, 1000000, 5000000, 10000000]
-slowdown_list = [[] for i in range(len(slowdown_bins)+1)]
-slowdown_val = [0.0 for i in range(len(slowdown_bins)+1)]
-slowdown_count = [0 for i in range(len(slowdown_bins)+1)]
-slowdown_avg = [0.0 for i in range(len(slowdown_bins)+1)]
+
+#slowdown_bins = [10000, 50000, 100000, 500000, 1000000, 5000000, 10000000]
+slowdown_bins = [100000, 5000000]
+
+def get_oracle_fct(src_addr, dst_addr, flow_size, bandwidth):
+    num_hops = 4
+    if (src_addr / 16 == dst_addr / 16):
+        num_hops = 2
+
+    propagation_delay = (num_hops * propagation_delay_per_hop_in_ns)*1e-3
+    transmission_delay = 0
+
+    # transmission_delay = (incl_overhead_bytes + 40) * 8.0 / bandwidth
+    transmission_delay = flow_size * 8.0 / bandwidth
+    if (num_hops == 4):
+        transmission_delay += 1.5 * pktsize * 8.0 / bandwidth
+    else:
+        transmission_delay += 1 * pktsize * 8.0 / bandwidth
+    return transmission_delay + propagation_delay
 
 for protocol in protocols:
+    slowdown_all_val = 0.0
+    slowdown_all_count = 0
+    slowdown_list = [[] for i in range(len(slowdown_bins)+1)]
+    slowdown_val = [0.0 for i in range(len(slowdown_bins)+1)]
+    slowdown_count = [0 for i in range(len(slowdown_bins)+1)]
+    slowdown_avg = [0.0 for i in range(len(slowdown_bins)+1)]
     for load in load_val:
         filename = dirname+"/"+"trace-"+str(load)+".txt.csv."+protocol
         if (not os.path.isfile(filename)):
@@ -36,10 +56,12 @@ for protocol in protocols:
             tput = float((tokens[6].split())[0])
             if (fct != -1):
                 #calculate slowdown
-                ideal_fct = ((flowsize*8.0)/link_bandwidth)/1e3 + 3*(((pktsize*8.0)/link_bandwidth)/1e3) + (propagation_delay_in_ns * 1e-3)
+                ideal_fct = get_oracle_fct(int(tokens[1]), int(tokens[2]), flowsize, link_bandwidth*1000) # bandwidth in Mbps
                 slowdown = fct/ideal_fct
                 if (slowdown < 1.0):
                     slowdown = 1.0
+                slowdown_all_val += slowdown
+                slowdown_all_count += 1
                 for k in range(len(slowdown_bins)):
                     if (flowsize <= slowdown_bins[k]):
                         slowdown_list[k].append(slowdown)
@@ -77,6 +99,11 @@ for protocol in protocols:
                 else:
                     out.write("infinity"+","+str(np.percentile(slowdown_list[j], 99)))
                 out.write("\n")
+        out.close()
+
+        out = open(dirname+"/"+protocol+"-"+str(load)+".txt.out.slowdown.all", "w")
+        mean_slowdown = slowdown_all_val / slowdown_all_count
+        out.write(str(mean_slowdown))
         out.close()
 
         if (len(sorted_fct) == 0):

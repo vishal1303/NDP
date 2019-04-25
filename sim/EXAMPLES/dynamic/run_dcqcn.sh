@@ -8,12 +8,24 @@ pktsize=1500
 
 endtime=0.05 #in sec
 flowsfinish=1000000 #stop experiment after these many flows have finished
-flowsstart=100000 #stop experiment after these many flows have started
+flowsstart=1000000 #stop experiment after these many flows have started
 
 shortflowsize=102400 #in bytes
 longflowsize=1000000 #in bytes
 
 propagationdelay=800 #200ns per hop
+
+#BAD-CASES
+for i in PERMUTATION DCTCP DCQCN NDP ;
+do
+    echo ../../datacenter/htsim_dcqcn_dynamic -o dcqcn_logfile -i bad-cases-dcqcn/${i}.dat -nodes ${no_of_nodes} -cwnd ${cwnd} -pktsize ${pktsize} -queuesize ${queuesize} -endtime ${endtime} -numflowsfinish ${flowsfinish} -numflowsstart ${flowsstart}
+    ../../datacenter/htsim_dcqcn_dynamic -o dcqcn_logfile -i bad-cases-dcqcn/${i}.dat -nodes ${no_of_nodes} -cwnd ${cwnd} -pktsize ${pktsize} -queuesize ${queuesize} -endtime ${endtime} -numflowsfinish ${flowsfinish} -numflowsstart ${flowsstart} > dcqcn_debug
+    cp dcqcn_debug bad-cases-dcqcn/${i}.debug
+    #echo "Parsing the logfile: ../../parse_output dcqcn_logfile -dcqcn -show > dcqcn_rate"
+    #../../parse_output dcqcn_logfile -dcqcn -show > dcqcn_rate
+    #echo "Extracting FCT and Rates: python process_data.py dcqcn_debug dcqcn_rate incast-144/${i}.dat dcqcn ${linkspeed}"
+    #python process_data.py dcqcn_debug dcqcn_rate incast-144/${i}.dat dcqcn ${linkspeed}
+done
 
 #TEST
 #for ((i=0;i<=0;i=i+1));
@@ -77,15 +89,15 @@ propagationdelay=800 #200ns per hop
 #done
 
 #PERMUTATION-INCAST
-for ((i=144;i<=144;i=i+1));
-do
-    echo ../../datacenter/htsim_dcqcn_dynamic -o dcqcn_logfile -i perm-incast-144/${i}.dat -nodes ${no_of_nodes} -cwnd ${cwnd} -pktsize ${pktsize} -queuesize ${queuesize} -endtime ${endtime}
-    ../../datacenter/htsim_dcqcn_dynamic -o dcqcn_logfile -i perm-incast-144/${i}.dat -nodes ${no_of_nodes} -cwnd ${cwnd} -pktsize ${pktsize} -queuesize ${queuesize} > dcqcn_debug -endtime ${endtime}
-    echo "Parsing the logfile: ../../parse_output dcqcn_logfile -dcqcn -show > dcqcn_rate"
-    ../../parse_output dcqcn_logfile -dcqcn -show > dcqcn_rate
-    echo "Extracting FCT and Rates: python process_data.py dcqcn_debug dcqcn_rate perm-incast-144/${i}.dat dcqcn ${linkspeed}"
-    python process_data.py dcqcn_debug dcqcn_rate perm-incast-144/${i}.dat dcqcn ${linkspeed}
-done
+#for ((i=144;i<=144;i=i+1));
+#do
+#    echo ../../datacenter/htsim_dcqcn_dynamic -o dcqcn_logfile -i perm-incast-144/${i}.dat -nodes ${no_of_nodes} -cwnd ${cwnd} -pktsize ${pktsize} -queuesize ${queuesize} -endtime ${endtime}
+#    ../../datacenter/htsim_dcqcn_dynamic -o dcqcn_logfile -i perm-incast-144/${i}.dat -nodes ${no_of_nodes} -cwnd ${cwnd} -pktsize ${pktsize} -queuesize ${queuesize} > dcqcn_debug -endtime ${endtime}
+#    echo "Parsing the logfile: ../../parse_output dcqcn_logfile -dcqcn -show > dcqcn_rate"
+#    ../../parse_output dcqcn_logfile -dcqcn -show > dcqcn_rate
+#    echo "Extracting FCT and Rates: python process_data.py dcqcn_debug dcqcn_rate perm-incast-144/${i}.dat dcqcn ${linkspeed}"
+#    python process_data.py dcqcn_debug dcqcn_rate perm-incast-144/${i}.dat dcqcn ${linkspeed}
+#done
 
 #ALL-TO-ALL
 #for ((i=128;i<=128;i=i+1));
@@ -147,7 +159,7 @@ done
 #    python process_data.py dcqcn_debug dcqcn_rate all-to-all-144-aditya/trace-${i}.txt.csv dcqcn ${linkspeed}
 #done
 #
-##ALL-TO-ALL-144-dctcp
+###ALL-TO-ALL-144-dctcp
 #for i in 20 40 60 80
 #do
 #    echo ../../datacenter/htsim_dcqcn_dynamic -o dcqcn_logfile -i all-to-all-144-dctcp/trace-${i}.txt.csv -nodes ${no_of_nodes} -cwnd ${cwnd} -pktsize ${pktsize} -queuesize ${queuesize} -numflowsfinish ${flowsfinish} -numflowsstart ${flowsstart}

@@ -560,5 +560,5 @@ void log_utilization(long long unsigned curr_time) {
     double utilization = ((double)eventlist.getNumOfBitsReceived() / (double)eventlist.getNumOfBitsStarted()) * 100.0;
     printf("******************************* t = %llu us bits recvd = %ld bits started = %ld utilization = %lf utilization = %lf\n",
             curr_time/1000000, eventlist.getNumOfBitsReceived(), eventlist.getNumOfBitsStarted(), utilization,
-            (eventlist.getNumOfBitsReceived()/(eventlist.now()/10000.0))/144);
+            (eventlist.getNumOfBitsReceived()/(eventlist.now()/10000.0))/1);
 }

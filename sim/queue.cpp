@@ -229,7 +229,8 @@ PriorityQueue::completeService()
     /* dequeue the packet */
     if (_queue[_servicing].empty()) return;
     assert(!_queue[_servicing].empty());
-    assert(_servicing != Q_NONE);
+    //assert(_servicing != Q_NONE);
+    if (_servicing == Q_NONE) return;
     Packet* pkt = _queue[_servicing].back();
     _queue[_servicing].pop_back();
     _queuesize[_servicing] -= pkt->size();
