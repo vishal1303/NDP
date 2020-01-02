@@ -53,6 +53,7 @@ def hw_histogram_from_file(keys, fname, fig_path, fig_name, x_lable, y_label, ve
 
     fig, ax = plt.subplots()
     #fig, ax = plt.subplots()
+    ax.grid()
 
     if remove_points:
         remove_points.sort(reverse=True)
@@ -69,7 +70,7 @@ def hw_histogram_from_file(keys, fname, fig_path, fig_name, x_lable, y_label, ve
                 # except:
                     # import pdb; pdb.set_trace()
 
-    width = 0.35
+    width = 0.15
     ind = np.arange( len(labels) )*(len(key_to_list)/2.0) * ind_multiplier #*( len(key_to_list))*width
     for i,stype in enumerate(keys):
         # try:
@@ -928,7 +929,7 @@ hw_histogram_from_file(keys, "utilization.dat", load_path, "testbed-utilization"
 
 keys = [('crimson', 'Tier-1'), ('dodgerblue', 'Tier-2')]
 label_replacer = {'Tier-1': 'Tier-1 switch', 'Tier-2': 'Tier-2 switch'}
-hw_histogram_from_file(keys, "queue.dat", load_path, "testbed-queue", "Workload", "Per-port queuing (cells)", hide_legend=False, label_replacer=label_replacer)
+hw_histogram_from_file(keys, "queue.dat", load_path, "testbed-queue", "Workload", "Data egress queue (packet)", hide_legend=False, label_replacer=label_replacer)
 
 #keys = [('x', 'School')]
 #hw_histogram_from_file(keys, "incast-goodput.txt", load_path, "incast-goodput", "Communicating Pairs", "Goodput (Gbps)")

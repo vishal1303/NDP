@@ -1,2 +1,2 @@
-#arch Permutation Incast All-to-All
-pNet 0 0 0
+#arch Incast Permutation All-to-All
+pNet 95 95 95

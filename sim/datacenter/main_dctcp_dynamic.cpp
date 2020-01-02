@@ -40,7 +40,8 @@
 #define PERIODIC 0
 #include "main.h"
 
-double RTT = 200; // this is per link delay in ns
+double RTT;
+double PER_HOP_DELAY; // this is per link delay in ns
 int DEFAULT_NODES = 432;
 
 FirstFit* ff = NULL;
@@ -50,7 +51,7 @@ string ntoa(double n);
 string itoa(uint64_t n);
 void log_utilization(long long unsigned curr_time);
 
-//#define SWITCH_BUFFER (SERVICE * RTT / 1000)
+//#define SWITCH_BUFFER (SERVICE * PER_HOP_DELAY / 1000)
 #define USE_FIRST_FIT 0
 #define FIRST_FIT_INTERVAL 100
 
@@ -146,6 +147,10 @@ int main(int argc, char **argv) {
             num_of_flows_to_start = atoi(argv[i+1]);
             cout << "finish after "<< num_of_flows_to_start << " flows have started"<<endl;
             i++;
+	} else if (!strcmp(argv[i],"-delay")){
+            PER_HOP_DELAY = atof(argv[i+1]);
+            cout << "Per hop delay "<< PER_HOP_DELAY <<endl;
+            i++;
 	} else
 	    exit_error(argv[0]);
 
@@ -231,7 +236,7 @@ int main(int argc, char **argv) {
 
 #ifdef LEAF_SPINE
     LeafSpineTopology* top = new LeafSpineTopology(memFromPkt(queuesize),
-            &logfile,&eventlist,ff,ECN);
+            &logfile,&eventlist,ff,ECN,PER_HOP_DELAY);
 #endif
 
     vector<const Route*>*** net_paths;
@@ -446,7 +451,7 @@ int main(int argc, char **argv) {
     logfile.write("# hostnicrate = " + ntoa(HOST_NIC) + " pkt/sec");
     logfile.write("# corelinkrate = " + ntoa(HOST_NIC*CORE_TO_HOST) + " pkt/sec");
     //logfile.write("# buffer = " + ntoa((double) (queues_na_ni[0][1]->_maxsize) / ((double) pktsize)) + " pkt");
-    double rtt = timeAsSec(timeFromNs(RTT));
+    double rtt = timeAsSec(timeFromNs(PER_HOP_DELAY));
     logfile.write("# rtt =" + ntoa(rtt));
 
     // GO!

@@ -15,18 +15,17 @@
 #include "queue_lossless_output.h"
 #include "ecnqueue.h"
 
-extern uint32_t RTT;
-
 string ntoa(double n);
 string itoa(uint64_t n);
 
 LeafSpineTopology::LeafSpineTopology(mem_b queuesize, Logfile* lg, 
-				 EventList* ev,FirstFit * fit,queue_type q){
+				 EventList* ev,FirstFit * fit,queue_type q, double delay){
     _queuesize = queuesize;
     logfile = lg;
     eventlist = ev;
     ff = fit;
     qt = q;
+    PER_HOP_DELAY = delay;
 
     set_params();
 
@@ -123,7 +122,7 @@ void LeafSpineTopology::init_network(){
           queues_nlp_ns[j][k]->setName("LP" + ntoa(j) + "->DST" +ntoa(k));
           logfile->writeName(*(queues_nlp_ns[j][k]));
 
-          pipes_nlp_ns[j][k] = new Pipe(timeFromUs(RTT), *eventlist);
+          pipes_nlp_ns[j][k] = new Pipe(timeFromNs(PER_HOP_DELAY), *eventlist);
           pipes_nlp_ns[j][k]->setName("Pipe-LP" + ntoa(j)  + "->DST" + ntoa(k));
           logfile->writeName(*(pipes_nlp_ns[j][k]));
 
@@ -142,7 +141,7 @@ void LeafSpineTopology::init_network(){
               new LosslessInputQueue(*eventlist,queues_ns_nlp[k][j]);
           }
 
-          pipes_ns_nlp[k][j] = new Pipe(timeFromUs(RTT), *eventlist);
+          pipes_ns_nlp[k][j] = new Pipe(timeFromNs(PER_HOP_DELAY), *eventlist);
           pipes_ns_nlp[k][j]->setName("Pipe-SRC" + ntoa(k) + "->LP" + ntoa(j));
           logfile->writeName(*(pipes_ns_nlp[k][j]));
 
@@ -163,7 +162,7 @@ void LeafSpineTopology::init_network(){
         queues_nup_nlp[k][j]->setName("UP" + ntoa(k) + "->LP_" + ntoa(j));
         logfile->writeName(*(queues_nup_nlp[k][j]));
 
-        pipes_nup_nlp[k][j] = new Pipe(timeFromUs(RTT), *eventlist);
+        pipes_nup_nlp[k][j] = new Pipe(timeFromNs(PER_HOP_DELAY), *eventlist);
         pipes_nup_nlp[k][j]->setName("Pipe-UP" + ntoa(k) + "->LP" + ntoa(j));
         logfile->writeName(*(pipes_nup_nlp[k][j]));
 
@@ -184,7 +183,7 @@ void LeafSpineTopology::init_network(){
             new LosslessInputQueue(*eventlist, queues_nup_nlp[k][j]);
         }
 
-        pipes_nlp_nup[j][k] = new Pipe(timeFromUs(RTT), *eventlist);
+        pipes_nlp_nup[j][k] = new Pipe(timeFromNs(PER_HOP_DELAY), *eventlist);
         pipes_nlp_nup[j][k]->setName("Pipe-LP" + ntoa(j) + "->UP" + ntoa(k));
         logfile->writeName(*(pipes_nlp_nup[j][k]));
 

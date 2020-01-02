@@ -40,8 +40,9 @@ class LeafSpineTopology: public Topology{
   Logfile* logfile;
   EventList* eventlist;
   queue_type qt;
+  double PER_HOP_DELAY;
 
-  LeafSpineTopology(mem_b queuesize, Logfile* log,EventList* ev,FirstFit* f, queue_type q);
+  LeafSpineTopology(mem_b queuesize, Logfile* log,EventList* ev,FirstFit* f, queue_type q, double RTT);
 
   void init_network();
   virtual vector<const Route*>* get_paths(int src, int dest);
