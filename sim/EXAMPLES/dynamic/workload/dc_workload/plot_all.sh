@@ -1,6 +1,6 @@
 #!/bin/bash
 
-declare -a workloads=("aditya" "dctcp" "datamining")
+declare -a workloads=("aditya" "dctcp")
 declare -a protocols=("ndp" "dctcp" "dcqcn")
 
 for workload in "${workloads[@]}"

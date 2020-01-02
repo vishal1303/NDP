@@ -4,12 +4,12 @@ no_of_nodes=144
 nodes_per_rack=16
 
 endtime=500 #in sec
-flowsfinish=3 #stop experiment after these many flows have finished
+flowsfinish=1000000 #stop experiment after these many flows have finished
 flowsstart=100000 #stop experiment after these many flows have started
 
 #NDP
-declare -a workload=("aditya" "dctcp" "datamining")
-bandwidth=100
+declare -a workload=("aditya" "dctcp")
+bandwidth=400
 pktsize=1500
 cwnd=35
 queuesize=12
@@ -31,8 +31,8 @@ do
 done
 
 #DCTCP
-declare -a workload=("aditya" "dctcp" "datamining")
-bandwidth=100
+declare -a workload=("aditya" "dctcp")
+bandwidth=400
 pktsize=1500
 cwnd=35
 queuesize=100
@@ -54,8 +54,8 @@ do
 done
 
 #DCQCN
-declare -a workload=("aditya" "dctcp" "datamining")
-bandwidth=100
+declare -a workload=("aditya" "dctcp")
+bandwidth=400
 pktsize=1500
 cwnd=35
 queuesize=100
