@@ -34,9 +34,10 @@ LeafSpineTopology::LeafSpineTopology(mem_b queuesize, Logfile* lg,
 }
 
 void LeafSpineTopology::set_params() {
-    NLP = 9; //9 leaf
-    NUP = 4; //4 spine
+
     LP_SRV_K = 16; //16 nodes per rack
+    NLP = 9; //9 leaf
+    NUP = LP_SRV_K / OVERSUBSCRIPTION; //4 spine
     NSRV = NLP * LP_SRV_K; //144 nodes
 
     switches_lp.resize(NLP,NULL);

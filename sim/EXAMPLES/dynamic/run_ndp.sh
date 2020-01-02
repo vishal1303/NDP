@@ -6,26 +6,26 @@ cwnd=35
 queuesize=12
 pktsize=1500
 
-endtime=0.05 #in sec
-flowsfinish=2059200000 #stop experiment after these many flows have finished
-flowsstart=1000000 #stop experiment after these many flows have started
+endtime=500 #in sec
+flowsfinish=1000000 #stop experiment after these many flows have finished
+flowsstart=100000 #stop experiment after these many flows have started
 
-shortflowsize=1 #in bytes
-longflowsize=1 #in bytes
+shortflowsize=1024 #in bytes
+longflowsize=1000000 #in bytes
 
-propagationdelay=800 #200ns per hop
+propagationdelay=200 #200ns per hop
 
 #BAD-CASES
-for i in PERMUTATION DCTCP DCQCN NDP ;
-do
-    echo ../../datacenter/htsim_ndp_dynamic -o ndp_logfile -i bad-cases-ndp/${i}.dat -nodes ${no_of_nodes} -cwnd ${cwnd} -pktsize ${pktsize} -queuesize ${queuesize} -endtime ${endtime} -numflowsfinish ${flowsfinish} -numflowsstart ${flowsstart} -strat perm
-    ../../datacenter/htsim_ndp_dynamic -o ndp_logfile -i bad-cases-ndp/${i}.dat -nodes ${no_of_nodes} -cwnd ${cwnd} -pktsize ${pktsize} -queuesize ${queuesize} -endtime ${endtime} -numflowsfinish ${flowsfinish} -numflowsstart ${flowsstart} -strat perm > ndp_debug
-    cp ndp_debug bad-cases-ndp/${i}.debug
-    #echo "Parsing the logfile: ../../parse_output ndp_logfile -ndp -show > ndp_rate"
-    #../../parse_output ndp_logfile -ndp -show > ndp_rate
-    #echo "Extracting FCT and Rates: python process_data.py ndp_debug ndp_rate incast-144/${i}.dat ndp ${linkspeed}"
-    #python process_data.py ndp_debug ndp_rate incast-144/${i}.dat ndp ${linkspeed}
-done
+#for i in PERMUTATION DCTCP DCQCN NDP ;
+#do
+#    echo ../../datacenter/htsim_ndp_dynamic -o ndp_logfile -i bad-cases-ndp/${i}.dat -nodes ${no_of_nodes} -cwnd ${cwnd} -pktsize ${pktsize} -queuesize ${queuesize} -endtime ${endtime} -numflowsfinish ${flowsfinish} -numflowsstart ${flowsstart} -strat perm
+#    ../../datacenter/htsim_ndp_dynamic -o ndp_logfile -i bad-cases-ndp/${i}.dat -nodes ${no_of_nodes} -cwnd ${cwnd} -pktsize ${pktsize} -queuesize ${queuesize} -endtime ${endtime} -numflowsfinish ${flowsfinish} -numflowsstart ${flowsstart} -strat perm > ndp_debug
+#    cp ndp_debug bad-cases-ndp/${i}.debug
+#    #echo "Parsing the logfile: ../../parse_output ndp_logfile -ndp -show > ndp_rate"
+#    #../../parse_output ndp_logfile -ndp -show > ndp_rate
+#    #echo "Extracting FCT and Rates: python process_data.py ndp_debug ndp_rate incast-144/${i}.dat ndp ${linkspeed}"
+#    #python process_data.py ndp_debug ndp_rate incast-144/${i}.dat ndp ${linkspeed}
+#done
 
 #for ((i=16;i<=16;i=i+1));
 #do
@@ -151,41 +151,41 @@ done
 #done
 
 #ALL-TO-ALL-144-ADITYA
-#for i in 20 40 60 80
-#do
-#    echo ../../datacenter/htsim_ndp_dynamic -o ndp_logfile -i all-to-all-144-aditya/trace-${i}.txt.csv -nodes ${no_of_nodes} -cwnd ${cwnd} -pktsize ${pktsize} -queuesize ${queuesize} -numflowsfinish ${flowsfinish} -numflowsstart ${flowsstart} -strat perm
-#    ../../datacenter/htsim_ndp_dynamic -o ndp_logfile -i all-to-all-144-aditya/trace-${i}.txt.csv -nodes ${no_of_nodes} -cwnd ${cwnd} -pktsize ${pktsize} -queuesize ${queuesize} -numflowsfinish ${flowsfinish} -numflowsstart ${flowsstart} -strat perm > ndp_debug
-#    cp ndp_debug all-to-all-144-aditya/trace-${i}.txt.csv.ndp.debug
-#    echo "Parsing the logfile: ../../parse_output ndp_logfile -ndp -show > ndp_rate"
-#    ../../parse_output ndp_logfile -ndp -show > ndp_rate
-#    echo "Extracting FCT and Rates: python process_data.py ndp_debug ndp_rate all-to-all-144-aditya/trace-${i}.txt.csv ndp ${linkspeed}"
-#    python process_data.py ndp_debug ndp_rate all-to-all-144-aditya/trace-${i}.txt.csv ndp ${linkspeed}
-#done
-#
-##ALL-TO-ALL-144-DCTCP
-#for i in 20 40 60 80
-#do
-#    echo ../../datacenter/htsim_ndp_dynamic -o ndp_logfile -i all-to-all-144-dctcp/trace-${i}.txt.csv -nodes ${no_of_nodes} -cwnd ${cwnd} -pktsize ${pktsize} -queuesize ${queuesize} -numflowsfinish ${flowsfinish} -numflowsstart ${flowsstart} -strat perm
-#    ../../datacenter/htsim_ndp_dynamic -o ndp_logfile -i all-to-all-144-dctcp/trace-${i}.txt.csv -nodes ${no_of_nodes} -cwnd ${cwnd} -pktsize ${pktsize} -queuesize ${queuesize} -numflowsfinish ${flowsfinish} -numflowsstart ${flowsstart} -strat perm > ndp_debug
-#    cp ndp_debug all-to-all-144-dctcp/trace-${i}.txt.csv.ndp.debug
-#    echo "Parsing the logfile: ../../parse_output ndp_logfile -ndp -show > ndp_rate"
-#    ../../parse_output ndp_logfile -ndp -show > ndp_rate
-#    echo "Extracting FCT and Rates: python process_data.py ndp_debug ndp_rate all-to-all-144-dctcp/trace-${i}.txt.csv ndp ${linkspeed}"
-#    python process_data.py ndp_debug ndp_rate all-to-all-144-dctcp/trace-${i}.txt.csv ndp ${linkspeed}
-#done
-#
-##ALL-TO-ALL-144-DATAMINING
-#for i in 20 40 60 80
-#do
-#    echo ../../datacenter/htsim_ndp_dynamic -o ndp_logfile -i all-to-all-144-datamining/trace-${i}.txt.csv -nodes ${no_of_nodes} -cwnd ${cwnd} -pktsize ${pktsize} -queuesize ${queuesize} -numflowsfinish ${flowsfinish} -numflowsstart ${flowsstart} -strat perm
-#    ../../datacenter/htsim_ndp_dynamic -o ndp_logfile -i all-to-all-144-datamining/trace-${i}.txt.csv -nodes ${no_of_nodes} -cwnd ${cwnd} -pktsize ${pktsize} -queuesize ${queuesize} -numflowsfinish ${flowsfinish} -numflowsstart ${flowsstart} -strat perm > ndp_debug
-#    cp ndp_debug all-to-all-144-datamining/trace-${i}.txt.csv.ndp.debug
-#    echo "Parsing the logfile: ../../parse_output ndp_logfile -ndp -show > ndp_rate"
-#    ../../parse_output ndp_logfile -ndp -show > ndp_rate
-#    echo "Extracting FCT and Rates: python process_data.py ndp_debug ndp_rate all-to-all-144-datamining/trace-${i}.txt.csv ndp ${linkspeed}"
-#    python process_data.py ndp_debug ndp_rate all-to-all-144-datamining/trace-${i}.txt.csv ndp ${linkspeed}
-#done
-#
+for i in 10 20 40 60 80
+do
+    echo ../../datacenter/htsim_ndp_dynamic -o ndp_logfile -i all-to-all-144-aditya/trace-${i}.txt.csv -nodes ${no_of_nodes} -cwnd ${cwnd} -pktsize ${pktsize} -queuesize ${queuesize} -numflowsfinish ${flowsfinish} -numflowsstart ${flowsstart} -strat perm
+    ../../datacenter/htsim_ndp_dynamic -o ndp_logfile -i all-to-all-144-aditya/trace-${i}.txt.csv -nodes ${no_of_nodes} -cwnd ${cwnd} -pktsize ${pktsize} -queuesize ${queuesize} -numflowsfinish ${flowsfinish} -numflowsstart ${flowsstart} -strat perm > ndp_debug
+    cp ndp_debug all-to-all-144-aditya/trace-${i}.txt.csv.ndp.debug
+    echo "Parsing the logfile: ../../parse_output ndp_logfile -ndp -show > ndp_rate"
+    ../../parse_output ndp_logfile -ndp -show > ndp_rate
+    echo "Extracting FCT and Rates: python process_data.py ndp_debug ndp_rate all-to-all-144-aditya/trace-${i}.txt.csv ndp ${linkspeed}"
+    python process_data.py ndp_debug ndp_rate all-to-all-144-aditya/trace-${i}.txt.csv ndp ${linkspeed}
+done
+
+#ALL-TO-ALL-144-DCTCP
+for i in 10 20 40 60 80
+do
+    echo ../../datacenter/htsim_ndp_dynamic -o ndp_logfile -i all-to-all-144-dctcp/trace-${i}.txt.csv -nodes ${no_of_nodes} -cwnd ${cwnd} -pktsize ${pktsize} -queuesize ${queuesize} -numflowsfinish ${flowsfinish} -numflowsstart ${flowsstart} -strat perm
+    ../../datacenter/htsim_ndp_dynamic -o ndp_logfile -i all-to-all-144-dctcp/trace-${i}.txt.csv -nodes ${no_of_nodes} -cwnd ${cwnd} -pktsize ${pktsize} -queuesize ${queuesize} -numflowsfinish ${flowsfinish} -numflowsstart ${flowsstart} -strat perm > ndp_debug
+    cp ndp_debug all-to-all-144-dctcp/trace-${i}.txt.csv.ndp.debug
+    echo "Parsing the logfile: ../../parse_output ndp_logfile -ndp -show > ndp_rate"
+    ../../parse_output ndp_logfile -ndp -show > ndp_rate
+    echo "Extracting FCT and Rates: python process_data.py ndp_debug ndp_rate all-to-all-144-dctcp/trace-${i}.txt.csv ndp ${linkspeed}"
+    python process_data.py ndp_debug ndp_rate all-to-all-144-dctcp/trace-${i}.txt.csv ndp ${linkspeed}
+done
+
+#ALL-TO-ALL-144-DATAMINING
+for i in 10 20 40 60 80
+do
+    echo ../../datacenter/htsim_ndp_dynamic -o ndp_logfile -i all-to-all-144-datamining/trace-${i}.txt.csv -nodes ${no_of_nodes} -cwnd ${cwnd} -pktsize ${pktsize} -queuesize ${queuesize} -numflowsfinish ${flowsfinish} -numflowsstart ${flowsstart} -strat perm
+    ../../datacenter/htsim_ndp_dynamic -o ndp_logfile -i all-to-all-144-datamining/trace-${i}.txt.csv -nodes ${no_of_nodes} -cwnd ${cwnd} -pktsize ${pktsize} -queuesize ${queuesize} -numflowsfinish ${flowsfinish} -numflowsstart ${flowsstart} -strat perm > ndp_debug
+    cp ndp_debug all-to-all-144-datamining/trace-${i}.txt.csv.ndp.debug
+    echo "Parsing the logfile: ../../parse_output ndp_logfile -ndp -show > ndp_rate"
+    ../../parse_output ndp_logfile -ndp -show > ndp_rate
+    echo "Extracting FCT and Rates: python process_data.py ndp_debug ndp_rate all-to-all-144-datamining/trace-${i}.txt.csv ndp ${linkspeed}"
+    python process_data.py ndp_debug ndp_rate all-to-all-144-datamining/trace-${i}.txt.csv ndp ${linkspeed}
+done
+
 ##permutation-144-ADITYA
 #for i in 20 40 60 80
 #do

@@ -2,4 +2,4 @@
 
 #./run_ndp.sh
 ./run_dctcp.sh
-./run_dcqcn.sh
+#./run_dcqcn.sh

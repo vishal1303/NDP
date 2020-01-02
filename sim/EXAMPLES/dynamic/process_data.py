@@ -25,6 +25,7 @@ for line in fct_file:
             finish_time = float(tokens[4])*1000 - float(flows[ID][3])*1000000 # end-start in us
             flowsize = int(flows[ID][2])*8 #in bits
             rate = flowsize/(finish_time*1000) #in Gbps
+            #if (rate > 0):
             out.write(str(ID)+","+str(flows[ID][0])+","+str(flows[ID][1])+","+str(flows[ID][2])+","+str(flows[ID][3])+","+str(finish_time)+ " us,"+str(rate)+ " Gbps")
             out.write("\n")
             del flows[ID]

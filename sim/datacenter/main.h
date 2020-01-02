@@ -5,7 +5,8 @@
 
 
 #define HOST_NIC 10000 // host nic speed in Gbps
-#define CORE_TO_HOST 4
+#define CORE_TO_HOST 1
+#define OVERSUBSCRIPTION 1
 
 //basic setup!
 

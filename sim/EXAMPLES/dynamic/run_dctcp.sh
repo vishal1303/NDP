@@ -6,27 +6,27 @@ cwnd=35
 queuesize=100
 pktsize=1500
 
-endtime=0.05 #in sec
+endtime=500 #in sec
 flowsfinish=1000000 #stop experiment after these many flows have finished
-flowsstart=1000000 #stop experiment after these many flows have started
+flowsstart=100000 #stop experiment after these many flows have started
 
 shortflowsize=102400 #in bytes
 longflowsize=1000000 #in bytes
 
-propagationdelay=800 #200ns per hop
+propagationdelay=200 #200ns per hop
 
 #BAD-CASES
-for i in PERMUTATION DCTCP DCQCN NDP ;
-do
-    echo ../../datacenter/htsim_dctcp_dynamic -o dctcp_logfile -i bad-cases-dctcp/${i}.dat -nodes ${no_of_nodes} -cwnd ${cwnd} -pktsize ${pktsize} -queuesize ${queuesize} -endtime ${endtime} -numflowsfinish ${flowsfinish} -numflowsstart ${flowsstart}
-    ../../datacenter/htsim_dctcp_dynamic -o dctcp_logfile -i bad-cases-dctcp/${i}.dat -nodes ${no_of_nodes} -cwnd ${cwnd} -pktsize ${pktsize} -queuesize ${queuesize} -endtime ${endtime} -numflowsfinish ${flowsfinish} -numflowsstart ${flowsstart} > dctcp_debug
-    cp dctcp_debug bad-cases-dctcp/${i}.debug
-    #echo "Parsing the logfile: ../../parse_output dctcp_logfile -dctcp -show > dctcp_rate"
-    #../../parse_output dctcp_logfile -dctcp -show > dctcp_rate
-    #echo "Extracting FCT and Rates: python process_data.py dctcp_debug dctcp_rate incast-144/${i}.dat dctcp ${linkspeed}"
-    #python process_data.py dctcp_debug dctcp_rate incast-144/${i}.dat dctcp ${linkspeed}
-done
-
+#for i in PERMUTATION DCTCP DCQCN NDP ;
+#do
+#    echo ../../datacenter/htsim_dctcp_dynamic -o dctcp_logfile -i bad-cases-dctcp/${i}.dat -nodes ${no_of_nodes} -cwnd ${cwnd} -pktsize ${pktsize} -queuesize ${queuesize} -endtime ${endtime} -numflowsfinish ${flowsfinish} -numflowsstart ${flowsstart}
+#    ../../datacenter/htsim_dctcp_dynamic -o dctcp_logfile -i bad-cases-dctcp/${i}.dat -nodes ${no_of_nodes} -cwnd ${cwnd} -pktsize ${pktsize} -queuesize ${queuesize} -endtime ${endtime} -numflowsfinish ${flowsfinish} -numflowsstart ${flowsstart} > dctcp_debug
+#    cp dctcp_debug bad-cases-dctcp/${i}.debug
+#    #echo "Parsing the logfile: ../../parse_output dctcp_logfile -dctcp -show > dctcp_rate"
+#    #../../parse_output dctcp_logfile -dctcp -show > dctcp_rate
+#    #echo "Extracting FCT and Rates: python process_data.py dctcp_debug dctcp_rate incast-144/${i}.dat dctcp ${linkspeed}"
+#    #python process_data.py dctcp_debug dctcp_rate incast-144/${i}.dat dctcp ${linkspeed}
+#done
+#
 #TEST
 #for ((i=0;i<=0;i=i+1));
 #do
@@ -126,7 +126,7 @@ done
 #done
 
 #ALL-TO-ALL-144-ADITYA
-#for i in 20 40 60 80
+#for i in 10 20 40 60 80
 #do
 #    echo ../../datacenter/htsim_dctcp_dynamic -o dctcp_logfile -i all-to-all-144-aditya/trace-${i}.txt.csv -nodes ${no_of_nodes} -cwnd ${cwnd} -pktsize ${pktsize} -queuesize ${queuesize} -numflowsfinish ${flowsfinish} -numflowsstart ${flowsstart}
 #    ../../datacenter/htsim_dctcp_dynamic -o dctcp_logfile -i all-to-all-144-aditya/trace-${i}.txt.csv -nodes ${no_of_nodes} -cwnd ${cwnd} -pktsize ${pktsize} -queuesize ${queuesize} -numflowsfinish ${flowsfinish} -numflowsstart ${flowsstart} > dctcp_debug
@@ -138,7 +138,7 @@ done
 #done
 #
 ##ALL-TO-ALL-144-dctcp
-#for i in 20 40 60 80
+#for i in 10 20 40 60 80
 #do
 #    echo ../../datacenter/htsim_dctcp_dynamic -o dctcp_logfile -i all-to-all-144-dctcp/trace-${i}.txt.csv -nodes ${no_of_nodes} -cwnd ${cwnd} -pktsize ${pktsize} -queuesize ${queuesize} -numflowsfinish ${flowsfinish} -numflowsstart ${flowsstart}
 #    ../../datacenter/htsim_dctcp_dynamic -o dctcp_logfile -i all-to-all-144-dctcp/trace-${i}.txt.csv -nodes ${no_of_nodes} -cwnd ${cwnd} -pktsize ${pktsize} -queuesize ${queuesize} -numflowsfinish ${flowsfinish} -numflowsstart ${flowsstart} > dctcp_debug
@@ -148,19 +148,19 @@ done
 #    echo "Extracting FCT and Rates: python process_data.py dctcp_debug dctcp_rate all-to-all-144-dctcp/trace-${i}.txt.csv dctcp ${linkspeed}"
 #    python process_data.py dctcp_debug dctcp_rate all-to-all-144-dctcp/trace-${i}.txt.csv dctcp ${linkspeed}
 #done
-#
-##ALL-TO-ALL-144-datamining
-#for i in 20 40 60 80
-#do
+
+#ALL-TO-ALL-144-datamining
+for i in 20
+do
 #    echo ../../datacenter/htsim_dctcp_dynamic -o dctcp_logfile -i all-to-all-144-datamining/trace-${i}.txt.csv -nodes ${no_of_nodes} -cwnd ${cwnd} -pktsize ${pktsize} -queuesize ${queuesize} -numflowsfinish ${flowsfinish} -numflowsstart ${flowsstart}
 #    ../../datacenter/htsim_dctcp_dynamic -o dctcp_logfile -i all-to-all-144-datamining/trace-${i}.txt.csv -nodes ${no_of_nodes} -cwnd ${cwnd} -pktsize ${pktsize} -queuesize ${queuesize} -numflowsfinish ${flowsfinish} -numflowsstart ${flowsstart} > dctcp_debug
-#    cp dctcp_debug all-to-all-144-datamining/trace-${i}.txt.csv.dctcp.debug
-#    echo "Parsing the logfile: ../../parse_output dctcp_logfile -dctcp -show > dctcp_rate"
-#    ../../parse_output dctcp_logfile -dctcp -show > dctcp_rate
-#    echo "Extracting FCT and Rates: python process_data.py dctcp_debug dctcp_rate all-to-all-144-datamining/trace-${i}.txt.csv dctcp ${linkspeed}"
-#    python process_data.py dctcp_debug dctcp_rate all-to-all-144-datamining/trace-${i}.txt.csv dctcp ${linkspeed}
-#done
-#
+    cp dctcp_debug all-to-all-144-datamining/trace-${i}.txt.csv.dctcp.debug
+    echo "Parsing the logfile: ../../parse_output dctcp_logfile -dctcp -show > dctcp_rate"
+    ../../parse_output dctcp_logfile -dctcp -show > dctcp_rate
+    echo "Extracting FCT and Rates: python process_data.py dctcp_debug dctcp_rate all-to-all-144-datamining/trace-${i}.txt.csv dctcp ${linkspeed}"
+    python process_data.py dctcp_debug dctcp_rate all-to-all-144-datamining/trace-${i}.txt.csv dctcp ${linkspeed}
+done
+
 ##permutation-144-ADITYA
 #for i in 20 40 60 80
 #do

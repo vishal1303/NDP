@@ -8,7 +8,7 @@ protocols = ['ndp', 'dctcp', 'dcqcn']
 for protocol in protocols:
     f = [None for i in range(4)]
     d = {0:20, 1:40, 2:60, 3:80}
-    for j in ["mean", "99", "all"]:
+    for j in ["bin.mean", "bin.99", "all.mean", "all.99"]:
         file_not_exists = 0
         for i in range(4):
             filename = dirname+"/"+protocol+"-"+str(d[i])+".txt.out.slowdown."+j
@@ -22,16 +22,16 @@ for protocol in protocols:
             continue
         out = open(dirname+"/"+protocol+".slowdown."+j, "w")
 
-        if (j == "all"):
+        if (j == "all.mean" or j == "all.99"):
             for k in range(4):
                 for line in f[k]:
                     out.write(str(d[k])+','+line.strip())
                     out.write('\n')
             continue
 
-        slowdown = [["0" for j in range(4)] for i in range(3)]
+        slowdown = [["0" for j in range(4)] for i in range(4)]
 
-        for i in range(3):
+        for i in range(4):
             for j in range(4):
                 for line in f[j]:
                     tokens = line.split(",")
@@ -43,17 +43,21 @@ for protocol in protocols:
 
         out.write("arch " + "0.2 " + "0.4 " + "0.6 " + "0.8 ")
         out.write("\n")
-        out.write("<=100KB ")
+        out.write("<=10KB ")
         for i in range(len(slowdown[0])):
             out.write(str.strip(slowdown[0][i]) + " ")
         out.write("\n")
-        out.write("100KB-5MB ")
+        out.write("10KB-100KB ")
         for i in range(len(slowdown[1])):
             out.write(str.strip(slowdown[1][i]) + " ")
         out.write("\n")
-        out.write(">5MB ")
+        out.write("100KB-1MB ")
         for i in range(len(slowdown[2])):
             out.write(str.strip(slowdown[2][i]) + " ")
+        out.write("\n")
+        out.write(">1MB ")
+        for i in range(len(slowdown[3])):
+            out.write(str.strip(slowdown[3][i]) + " ")
         out.write("\n")
 
         #slowdown = [["0" for j in range(4)] for i in range(8)]
