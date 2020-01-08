@@ -9,7 +9,7 @@ flowsstart=100000 #stop experiment after these many flows have started
 
 #NDP
 declare -a workload=("aditya" "dctcp")
-bandwidth=400
+bandwidth=40
 pktsize=1500
 cwnd=35
 queuesize=12
@@ -32,7 +32,7 @@ done
 
 #DCTCP
 declare -a workload=("aditya" "dctcp")
-bandwidth=400
+bandwidth=40
 pktsize=1500
 cwnd=35
 queuesize=100
@@ -55,7 +55,7 @@ done
 
 #DCQCN
 declare -a workload=("aditya" "dctcp")
-bandwidth=400
+bandwidth=40
 pktsize=1500
 cwnd=35
 queuesize=100

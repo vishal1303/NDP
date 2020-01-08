@@ -6,9 +6,9 @@ workload = sys.argv[1]
 dirname = "workload/dc_workload/all-to-all-144-"+sys.argv[1]
 protocol = sys.argv[2]
 
-bandwidth = ['40G', '100G', '400G']
-delay = ['625.6ns']
-load = [0.2, 0.4, 0.6, 0.8]
+bandwidth = ['40G', '100G']
+delay = ['200ns']
+load = [0.5, 0.6, 0.7, 0.8]
 
 #utilization
 for b in bandwidth:
@@ -66,7 +66,7 @@ for b in bandwidth:
                             slowdown_count[len(slowdown_bins)] = slowdown_count[len(slowdown_bins)] + 1
                 f.close()
             except:
-                continue
+                pass
 
             out = open(dirname+"/"+protocol+"-"+b+"-"+d+"-"+str(l)+".out.slowdown.bin.mean", "w")
             out.write("arch ")
@@ -85,6 +85,12 @@ for b in bandwidth:
                         out.write(" ")
                     else:
                         out.write(str(slowdown_avg[j]))
+                        out.write("\n")
+                else:
+                    if j < len(slowdown_bins):
+                        out.write("1 ")
+                    else:
+                        out.write("1")
                         out.write("\n")
             out.close()
 
@@ -105,15 +111,27 @@ for b in bandwidth:
                     else:
                         out.write(str(np.percentile(slowdown_list[j], 99)))
                         out.write("\n")
+                else:
+                    if j < len(slowdown_bins):
+                        out.write("1 ")
+                    else:
+                        out.write("1")
+                        out.write("\n")
             out.close()
 
             out = open(dirname+"/"+protocol+"-"+b+"-"+d+"-"+str(l)+".out.slowdown.all.mean", "w")
-            mean_slowdown = slowdown_all_val / slowdown_all_count
-            out.write(str(mean_slowdown))
+            if slowdown_all_count == 0:
+                out.write("1")
+            else:
+                mean_slowdown = slowdown_all_val / slowdown_all_count
+                out.write(str(mean_slowdown))
             out.close()
 
             out = open(dirname+"/"+protocol+"-"+b+"-"+d+"-"+str(l)+".out.slowdown.all.99", "w")
-            slowdown_all_list.sort()
-            p99_slowdown = np.percentile(slowdown_all_list, 99)
-            out.write(str(p99_slowdown))
+            if len(slowdown_all_list) == 0:
+                out.write("1")
+            else:
+                slowdown_all_list.sort()
+                p99_slowdown = np.percentile(slowdown_all_list, 99)
+                out.write(str(p99_slowdown))
             out.close()
