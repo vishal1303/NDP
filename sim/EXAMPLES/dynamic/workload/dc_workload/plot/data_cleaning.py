@@ -7,7 +7,7 @@ dirname = "workload/dc_workload/all-to-all-144-"+sys.argv[1]
 protocol = sys.argv[2]
 
 bandwidth = ['40G', '100G']
-delay = ['200ns']
+delay = ['200.0ns']
 load = [0.5, 0.6, 0.7, 0.8]
 
 #utilization
@@ -66,6 +66,7 @@ for b in bandwidth:
                             slowdown_count[len(slowdown_bins)] = slowdown_count[len(slowdown_bins)] + 1
                 f.close()
             except:
+                print dirname+"/"+protocol+"-"+b+"-"+d+"-"+str(l)+".out"+" not found"
                 pass
 
             out = open(dirname+"/"+protocol+"-"+b+"-"+d+"-"+str(l)+".out.slowdown.bin.mean", "w")

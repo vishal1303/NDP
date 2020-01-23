@@ -6,7 +6,7 @@ dirname = "workload/dc_workload/all-to-all-144-"+workload
 protocol = sys.argv[2]
 
 bandwidth = ['40G', '100G']
-delay = ['200ns']
+delay = ['200.0ns']
 load = [0.5, 0.6, 0.7, 0.8]
 
 slowdown_val = []
@@ -24,7 +24,9 @@ for b in bandwidth:
                 slowdown_val.append("1")
                 continue
         out = open(dirname+"/"+protocol+"-"+b+"-"+d+"-ANY."+"out.slowdown.all.mean", "w")
-        out.write("arch 0.2 0.4 0.6 0.8")
+        out.write("arch ")
+        for i in range(len(load)):
+            out.write(str(load[i])+" ")
         out.write("\n")
         out.write(protocol)
         out.write(" ")
@@ -46,7 +48,9 @@ for b in bandwidth:
                 slowdown_val.append("1")
                 continue
         out = open(dirname+"/"+protocol+"-"+b+"-"+d+"-ANY."+"out.slowdown.all.99", "w")
-        out.write("arch 0.2 0.4 0.6 0.8")
+        out.write("arch ")
+        for i in range(len(load)):
+            out.write(str(load[i])+" ")
         out.write("\n")
         out.write(protocol)
         out.write(" ")

@@ -11,12 +11,13 @@ bandwidth = int(sys.argv[3])
 pktsize = int(sys.argv[4])
 nodes_per_rack = int(sys.argv[5])
 propagation_delay_per_hop_in_ns = float(sys.argv[6])
-protocol = sys.argv[7]
+skew = float(sys.argv[7])
+protocol = sys.argv[8]
 
 flows = {}
 
 folder = "workload/dc_workload/all-to-all-144-"+workload
-filename = protocol+"-"+str(bandwidth)+"G-"+str(propagation_delay_per_hop_in_ns)+"ns-"+str(load)+".out"
+filename = protocol+"-"+str(bandwidth)+"G-"+str(propagation_delay_per_hop_in_ns)+"ns-"+str(load)+"-"+str(skew)+".out"
 
 def get_oracle_fct(src_addr, dst_addr, flow_size):
     num_hops = 4
@@ -32,7 +33,7 @@ def get_oracle_fct(src_addr, dst_addr, flow_size):
 
     return transmission_delay + propagation_delay
 
-tracefile = "trace-"+str(bandwidth)+"G-"+str(load)+".csv"
+tracefile = "trace-"+str(bandwidth)+"G-"+str(load)+"-"+str(skew)".csv"
 inp = open(folder+"/"+tracefile, "r")
 for line in inp:
     tokens = line.split(',')

@@ -4,7 +4,7 @@
 #include <string>
 
 
-#define HOST_NIC 40000 // host nic speed in Gbps
+#define HOST_NIC 100000 // host nic speed in Gbps
 #define CORE_TO_HOST 1
 #define OVERSUBSCRIPTION 1
 
